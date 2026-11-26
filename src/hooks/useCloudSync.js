@@ -96,5 +96,7 @@ export const useCloudSync = ({
     };
   }, []);
 
-  return { activeUsers };
+  const seedTitleBaseline = (id, title) => coordinatorRef.current.seedTitleBaseline(id, title);
+
+  return { activeUsers, seedTitleBaseline };
 };

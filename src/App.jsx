@@ -173,7 +173,7 @@ const App = ({ auth, sbProject, theme, onThemeChange, isCloudAvailable, isCloudA
   // ── Cloud sync (bidirectional) ──────────────────────────────────────
   const cloudEnabled = storageType === 'cloud';
   const collapsedTeamIds = useMemo(() => teams.filter(t => t.collapsed).map(t => t.id), [teams]);
-  const { activeUsers } = useCloudSync({
+  const { activeUsers, seedTitleBaseline } = useCloudSync({
     enabled: cloudEnabled,
     projectId,
     sbProject,
@@ -231,6 +231,7 @@ const App = ({ auth, sbProject, theme, onThemeChange, isCloudAvailable, isCloudA
     viewStartDateIso, openProject, newProject, importFromJson, setFileHandle,
     onAskIncludeHistory: () => setPendingHistoryAction('newFile'),
     suppressDetection,
+    seedTitleBaseline,
   });
 
   const handleConvertToCloud = async () => {
