@@ -182,10 +182,24 @@ jobs:
       group: release
       cancel-in-progress: false
     steps:
-      - uses: actions/checkout@v7
+      # main is protected by a ruleset that only repository admins may bypass.
+      # RELEASE_TOKEN is a fine-grained token of the repository owner with
+      # "Contents: read and write" on this repository.
+      - name: Check release token
+        env:
+          RELEASE_TOKEN: ${{ secrets.RELEASE_TOKEN }}
+        run: |
+          if [ -z "$RELEASE_TOKEN" ]; then
+            echo "::error::Secret RELEASE_TOKEN is missing, see docs/ci-cd.md"
+            exit 1
+          fi
 
-      # chore(release) commits do not count as release-relevant, and pushes
-      # with GITHUB_TOKEN do not trigger workflows, so this cannot loop.
+      - uses: actions/checkout@v7
+        with:
+          token: ${{ secrets.RELEASE_TOKEN }}
+
+      # chore(release) commits are not release-relevant and [skip ci] keeps the
+      # push from starting the build again.
       - name: Commit version to package.json
         id: bump
         env:
@@ -194,7 +208,7 @@ jobs:
           npm pkg set version="${VERSION#v}"
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git commit -am "chore(release): $VERSION"
+          git commit -am "chore(release): $VERSION [skip ci]"
           git push origin HEAD:main
           echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
 

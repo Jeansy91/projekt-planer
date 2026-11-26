@@ -30,7 +30,7 @@ The next version follows the [Conventional Commits](https://www.conventionalcomm
 
 The image is tagged with `latest`, the commit SHA and the version without the `v`. The version is written to `package.json` before the image is built, so the info dialog in the app shows the released version.
 
-The release job pushes to `main` with the workflow token. If you protect `main` with required reviews, allow GitHub Actions to bypass the rule, otherwise the version commit fails.
+`main` is protected by a ruleset: no deletion, no force push, changes only through pull requests with passing checks. Repository admins may bypass it. The release job pushes the version commit with the secret `RELEASE_TOKEN`, a fine-grained personal access token of the repository owner with **Contents: read and write** on this repository only. Create it under GitHub Settings → Developer settings → Fine-grained tokens and store it under the repository's Settings → Secrets and variables → Actions. Without it, the release job stops with an error before anything is published to `main`.
 
 ## E2E
 
