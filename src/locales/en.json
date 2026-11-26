@@ -42,6 +42,7 @@
     "defaultTitle": "Task Planning",
     "newTitle": "New Task Planning",
     "fallbackTitle": "Plan",
+    "loading": "Loading project…",
     "importedTitle": "Imported Plan",
     "storageBadge": {
       "localStorage": "LocalStorage (ID: {{id}})"

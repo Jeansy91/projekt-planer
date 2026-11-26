@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import { Edit2, FileCheck, Database, RefreshCw, Download, Globe, ChevronDown, Check, HelpCircle, Cloud, CloudUpload, User, Share2, Menu, Home, Settings, LogOut, Sun, Moon, Monitor, History, Undo2, Redo2 } from 'lucide-react';
+import { Edit2, FileCheck, Database, RefreshCw, Download, Globe, ChevronDown, Check, HelpCircle, Cloud, CloudUpload, User, Share2, Menu, Home, Settings, LogOut, Sun, Moon, Monitor, History, Undo2, Redo2, Loader2 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { getInitials } from '../utils/avatarUtils';
 
@@ -51,6 +51,7 @@ const ProjectHeader = ({
   canUndo = false,
   canRedo = false,
   undoDepth = 0,
+  isLoading = false,
 }) => {
   const { t, i18n } = useTranslation();
   const [showLangMenu, setShowLangMenu] = useState(false);
@@ -77,6 +78,8 @@ const ProjectHeader = ({
 
   const currentLang = LANGUAGES.find(l => i18n.language.startsWith(l.code)) || LANGUAGES[0];
 
+  // Export and history would read the not yet loaded (empty) project
+  const lockedWhileLoading = (key) => isLoading && (key === 'export' || key === 'history');
   const actions = [
     { key: 'export', icon: Download, label: t('project.actions.export'), action: onExport },
     ...(storageType === 'cloud' && user ? [
@@ -107,7 +110,16 @@ const ProjectHeader = ({
             <Home size={14} className="text-slate-400 dark:text-slate-500" aria-hidden="true" />
           </button>
 
-          {isEditingTitle && canEdit ? (
+          {isLoading ? (
+            <h1
+              data-testid="project-title"
+              aria-busy="true"
+              className="text-2xl font-bold text-slate-400 dark:text-slate-500 flex items-center gap-2 min-w-0 truncate"
+            >
+              <Loader2 size={20} className="animate-spin shrink-0" aria-hidden="true" />
+              <span className="truncate">{t('project.loading')}</span>
+            </h1>
+          ) : isEditingTitle && canEdit ? (
             <input
               autoFocus
               data-testid="project-title-input"
@@ -168,7 +180,8 @@ const ProjectHeader = ({
                 key={item.key}
                 data-testid={item.testId}
                 onClick={item.action}
-                className="h-8 flex items-center gap-1.5 px-2.5 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg hover:border-blue-300 hover:bg-blue-50 dark:hover:bg-blue-900/30 transition-all text-xs font-medium text-slate-600 dark:text-slate-300 shadow-sm"
+                disabled={lockedWhileLoading(item.key)}
+                className="h-8 flex items-center gap-1.5 px-2.5 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg enabled:hover:border-blue-300 enabled:hover:bg-blue-50 dark:enabled:hover:bg-blue-900/30 disabled:opacity-40 transition-all text-xs font-medium text-slate-600 dark:text-slate-300 shadow-sm"
                 aria-label={item.label}
               >
                 <Icon size={14} className="text-slate-400 dark:text-slate-500" aria-hidden="true" />
@@ -201,6 +214,7 @@ const ProjectHeader = ({
                     role="menuitem"
                     data-testid={item.testId}
                     onClick={() => { item.action(); setShowOverflowMenu(false); }}
+                    disabled={lockedWhileLoading(item.key)}
                     className="w-full text-left px-4 py-2 text-xs font-semibold text-slate-600 dark:text-slate-300 hover:bg-blue-50 dark:hover:bg-blue-900/30 hover:text-blue-700 dark:hover:text-blue-300 flex items-center gap-3 transition-colors"
                   >
                     <Icon size={14} className="text-slate-400 dark:text-slate-500" aria-hidden="true" />
@@ -329,7 +343,7 @@ const ProjectHeader = ({
 
       {/* Row 2: Storage badge (left) + Active members (right) */}
       <div className="flex items-center justify-between">
-        <div className={`flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-md w-fit ${storageType === 'cloud' ? 'bg-purple-100 dark:bg-purple-800/30 text-purple-700 dark:text-purple-300' : fileHandle ? 'bg-emerald-100 dark:bg-emerald-800/30 text-emerald-700 dark:text-emerald-300' : 'bg-blue-100 dark:bg-blue-800/30 text-blue-700 dark:text-blue-300'}`} aria-live="polite">
+        <div className={`flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-md w-fit ${isLoading ? 'invisible ' : ''}${storageType === 'cloud' ? 'bg-purple-100 dark:bg-purple-800/30 text-purple-700 dark:text-purple-300' : fileHandle ? 'bg-emerald-100 dark:bg-emerald-800/30 text-emerald-700 dark:text-emerald-300' : 'bg-blue-100 dark:bg-blue-800/30 text-blue-700 dark:text-blue-300'}`} aria-live="polite">
           {storageType === 'cloud' ? (
             <>
               <Cloud size={12} aria-hidden="true" /> {t('cloud.badge')} ({projectId.slice(0, 8)}) {saveStatus === 'saving' && <RefreshCw size={10} className="animate-spin" aria-label={t('a11y.saving')} />}

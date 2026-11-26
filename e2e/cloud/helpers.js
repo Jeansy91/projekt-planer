@@ -34,6 +34,8 @@ export const createCloudProject = async (page, title) => {
   await page.click('[data-testid="dashboard-new-project"]');
   await page.click('[data-testid="new-project-cloud"]');
   await page.waitForURL(/\/project\//);
+  // The project is read-only until it has finished loading
+  await expect(page.locator('[data-testid="add-team-btn"]')).toBeVisible({ timeout: 15000 });
   await page.click('[data-testid="project-title"]');
   await page.fill('[data-testid="project-title-input"]', title);
   await page.keyboard.press('Enter');

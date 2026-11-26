@@ -41,6 +41,7 @@
   "project": {
     "defaultTitle": "Aufgabenplanung",
     "newTitle": "Neue Aufgabenplanung",
+    "loading": "Projekt wird geladen…",
     "fallbackTitle": "Plan",
     "importedTitle": "Importierter Plan",
     "storageBadge": {
