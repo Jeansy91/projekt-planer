@@ -180,3 +180,44 @@ describe('cloudSyncCoordinator — resync', () => {
     expect(sbProject.upsertTask).not.toHaveBeenCalled();
   });
 });
+
+describe('cloudSyncCoordinator — title baseline', () => {
+  const setup = () => {
+    const sbProject = makeStubProject();
+    const mutators = makeInMemoryMutators();
+    const coord = createCloudSyncCoordinator({
+      sbProject,
+      mutators: { applyTasks: mutators.applyTasks, applyTeams: mutators.applyTeams, applyTitle: mutators.applyTitle },
+      suppressDetection: vi.fn(),
+    });
+    return { sbProject, coord };
+  };
+
+  it('should_flush_title_when_renamed_before_project_id_was_applied', async () => {
+    // Arrange: boot reports the DB title, the user renames while loading
+    const { sbProject, coord } = setup();
+    coord.seedTitleBaseline('P1', 'Neue Aufgabenplanung');
+    coord.setProjectId('P1');
+
+    // Act: first title the watcher sees already differs from the DB
+    coord.noteLocalChange('title', 'Renamed');
+    await new Promise(resolve => setTimeout(resolve, 700));
+
+    // Assert
+    expect(sbProject.updateProjectSettings).toHaveBeenCalledWith('P1', { title: 'Renamed' });
+  });
+
+  it('should_not_flush_title_when_first_seen_title_equals_seeded_baseline', async () => {
+    // Arrange
+    const { sbProject, coord } = setup();
+    coord.seedTitleBaseline('P1', 'Same');
+    coord.setProjectId('P1');
+
+    // Act
+    coord.noteLocalChange('title', 'Same');
+    await new Promise(resolve => setTimeout(resolve, 700));
+
+    // Assert
+    expect(sbProject.updateProjectSettings).not.toHaveBeenCalled();
+  });
+});

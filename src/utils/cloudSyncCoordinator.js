@@ -46,12 +46,23 @@ export const createCloudSyncCoordinator = ({ sbProject, mutators, suppressDetect
   let projectId = null;
   let resyncing = false;
 
+  // DB-confirmed title reported by the boot path before the project id is
+  // applied. Without it the first local title seen would be taken as the
+  // baseline, so a rename made while the project was still loading would
+  // never be flushed.
+  let seededTitle = null;
+
+  const seedTitleBaseline = (id, title) => {
+    seededTitle = { id, title };
+  };
+
   const setProjectId = (id) => {
     if (id === projectId) return;
     projectId = id;
     baselines.task = null;
     baselines.team = null;
-    baselines.title = null;
+    baselines.title = seededTitle && seededTitle.id === id ? seededTitle.title : null;
+    seededTitle = null;
     registry.clearAll();
   };
 
@@ -195,6 +206,7 @@ export const createCloudSyncCoordinator = ({ sbProject, mutators, suppressDetect
     } else if (kind === 'team') {
       flushTeamsImmediate(current);
     } else if (kind === 'title') {
+      if (current === baselines.title) return;
       registry.add('title', projectId, current);
       scheduleTitleFlush();
     }
@@ -436,6 +448,7 @@ export const createCloudSyncCoordinator = ({ sbProject, mutators, suppressDetect
 
   return {
     setProjectId,
+    seedTitleBaseline,
     noteLocalChange,
     onRemoteEvent,
     resync,

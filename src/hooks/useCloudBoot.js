@@ -10,6 +10,7 @@ export const useCloudBoot = ({
   viewStartDateIso, openProject, newProject, importFromJson, setFileHandle,
   onAskIncludeHistory,
   suppressDetection,
+  seedTitleBaseline,
 }) => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -116,6 +117,9 @@ export const useCloudBoot = ({
         setWeeksShown(data.weeksShown || 12);
       }
 
+      // Tell Cloud sync which title the DB holds, so a rename made while the
+      // project was loading is flushed instead of adopted as the baseline.
+      seedTitleBaseline?.(data.id, data.title);
       setProjectId(data.id);
       setTeams(loadedTeams);
       setTasks(data.tasks);
