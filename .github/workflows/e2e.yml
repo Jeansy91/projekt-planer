@@ -95,9 +95,18 @@ jobs:
       - name: Export Supabase settings for the dev server
         run: |
           yarn supabase status -o env > supabase.env
-          url=$(sed -n 's/^API_URL="\{0,1\}\([^"]*\)"\{0,1\}$/\1/p' supabase.env)
-          key=$(sed -n 's/^\(PUBLISHABLE_KEY\|ANON_KEY\)="\{0,1\}\([^"]*\)"\{0,1\}$/\2/p' supabase.env | head -n 1)
-          test -n "$url" && test -n "$key"
+          # Variable names differ between CLI versions: accept an optional
+          # "export " and "SUPABASE_" prefix and quoted or unquoted values.
+          value() {
+            sed -n -E "s/^(export )?(SUPABASE_)?($1)=\"?([^\"]*)\"?$/\4/p" supabase.env | head -n 1
+          }
+          url=$(value 'API_URL|URL')
+          key=$(value 'PUBLISHABLE_KEY|ANON_KEY')
+          if [ -z "$url" ] || [ -z "$key" ]; then
+            echo "::error::Could not read API URL or key. Variables reported by supabase status:"
+            sed -n -E 's/^(export )?([A-Za-z_]+)=.*/\2/p' supabase.env
+            exit 1
+          fi
           echo "SUPABASE_PROJECT_URL=$url" >> "$GITHUB_ENV"
           echo "SUPABASE_PUBLISHABLE_KEY=$key" >> "$GITHUB_ENV"
 
@@ -110,6 +119,15 @@ jobs:
         run: yarn test:e2e:cloud
         env:
           CI: true
+
+      - name: Show failure context
+        if: failure()
+        run: |
+          find test-results -name error-context.md -print0 2> /dev/null |
+            while IFS= read -r -d '' file; do
+              echo "::group::$file"; cat "$file"; echo "::endgroup::"
+            done
+          tail -n 50 dev.log 2> /dev/null || true
 
       - name: Report Supabase resource usage
         if: always()

@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test';
-import { register, login, uniqueEmail } from './helpers';
+import { register, login, openSignIn, uniqueEmail } from './helpers';
 
 test('should_keep_session_after_reload_when_user_registered', async ({ page }) => {
   // Arrange
@@ -37,8 +37,7 @@ test('should_reject_sign_in_when_password_is_wrong', async ({ browser }) => {
   await signupContext.close();
   const context = await browser.newContext();
   const page = await context.newPage();
-  await page.goto('/');
-  await page.click('[data-testid="auth-btn"]');
+  await openSignIn(page);
   await page.fill('[data-testid="auth-email-input"]', email);
   await page.click('[data-testid="auth-submit-btn"]');
 
