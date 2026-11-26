@@ -94,7 +94,7 @@ jobs:
 
       - name: Export Supabase settings for the dev server
         run: |
-          yarn --silent supabase status -o env > supabase.env 2> /dev/null
+          yarn supabase status -o env > supabase.env
           # Variable names differ between CLI versions: accept an optional
           # "export " and "SUPABASE_" prefix and quoted or unquoted values.
           value() {
