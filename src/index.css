@@ -1,0 +1,445 @@
+@import "tailwindcss";
+
+/* Class-based dark mode (mirrors old darkMode: 'class') */
+@variant dark (&:is(.dark *));
+
+/* Touch device variant — hover:none + pointer:coarse = primary touch input */
+@variant touch {
+  @media (hover: none) and (pointer: coarse) {
+    @slot;
+  }
+}
+
+/*
+ * Dynamic color classes — used in team/task components where the color is a
+ * runtime variable (e.g. `bg-${teamColor}-600`). Tailwind v4 can't detect
+ * these via content scanning, so we list them explicitly here.
+ * This is the v4 equivalent of the v3 `safelist` in tailwind.config.cjs.
+ */
+@source inline("{bg,text,border,ring}-{rose,orange,yellow,lime,emerald,cyan,blue,violet,fuchsia,slate,red,amber,teal,sky,indigo,purple,pink}-{50,100,200,300,400,500,600,700,800,900,950}");
+@source inline("bg-{rose,orange,yellow,lime,emerald,cyan,blue,violet,fuchsia,slate,red,amber,teal,sky,indigo,purple,pink}-{50,100,400,500,600,800,900}/{20,30,60,95}");
+@source inline("border-{rose,orange,yellow,lime,emerald,cyan,blue,violet,fuchsia,slate,red,amber,teal,sky,indigo,purple,pink}-{100,200,700}/{10,30,40,50,60,70}");
+@source inline("{hover:text,hover:bg}-{rose,orange,yellow,lime,emerald,cyan,blue,violet,fuchsia,slate,red,amber,teal,sky,indigo,purple,pink}-{200,300,600,700,800}");
+@source inline("{dark:bg,dark:text,dark:border}-{rose,orange,yellow,lime,emerald,cyan,blue,violet,fuchsia,slate,red,amber,teal,sky,indigo,purple,pink}-{50,100,200,300,400,500,600,700,800,900,950}");
+@source inline("dark:bg-{rose,orange,yellow,lime,emerald,cyan,blue,violet,fuchsia,slate,red,amber,teal,sky,indigo,purple,pink}-{400,500,700,800,900}/{20,30}");
+@source inline("dark:border-{rose,orange,yellow,lime,emerald,cyan,blue,violet,fuchsia,slate,red,amber,teal,sky,indigo,purple,pink}-{100,200,400,500,600,700,800,900}/{10,20,30,40,50,60,70}");
+@source inline("dark:hover:text-{rose,orange,yellow,lime,emerald,cyan,blue,violet,fuchsia,slate,red,amber,teal,sky,indigo,purple,pink}-{100,300,400}");
+
+/* ── Tailwind v4 preflight fixes ─────────────────────────────────────────── */
+
+@layer base {
+  /* v4 removed cursor:pointer from button preflight — restore it */
+  button, [role="button"] {
+    cursor: pointer;
+  }
+
+  /* v4 changed default border-color from gray-200 to currentColor — restore
+     the light/neutral default so bare `border` keeps looking as expected */
+  *, ::before, ::after {
+    border-color: var(--color-slate-200);
+  }
+}
+
+/* Suppress all transitions during theme switching to avoid color-change delay */
+.no-transition * {
+  transition: none !important;
+}
+
+/* Custom app styles */
+html {
+  height: 100%;
+  overflow-y: scroll;
+  /* always show scrollbar to prevent layout shift between pages */
+}
+
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+}
+
+.bg-grid {
+  background-image: radial-gradient(circle, color-mix(in srgb, var(--color-slate-300) 30%, transparent) 1px, transparent 1px);
+  background-size: 16px 16px;
+}
+
+:is(.dark .bg-grid) {
+  background-image: radial-gradient(circle, color-mix(in srgb, var(--color-slate-600) 40%, transparent) 1px, transparent 1px);
+}
+
+/* Dark mode scrollbars */
+.dark ::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+.dark ::-webkit-scrollbar-track {
+  background: var(--color-slate-800);
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: var(--color-slate-600);
+  border-radius: 5px;
+  border: 2px solid var(--color-slate-800);
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: var(--color-slate-500);
+}
+
+.dark ::-webkit-scrollbar-corner {
+  background: var(--color-slate-800);
+}
+
+@supports (scrollbar-color: auto) {
+  .dark * {
+    scrollbar-color: var(--color-slate-600) var(--color-slate-800);
+  }
+}
+
+/* ── Task bar — color driven by CSS variables set via inline style ────── */
+
+/* taskBarStyle(color) sets --task-bar-bg / --task-bar-dark-bg on the element.
+   Text color inherits from the parent (dark in light mode). */
+.task-bar {
+  background-color: var(--task-bar-bg);
+}
+
+.dark .task-bar {
+  background-color: var(--task-bar-dark-bg);
+}
+
+/* ── BlockNote editor overrides ─────────────────────────────────────────── */
+
+/* Propagate flex-fill through BlockNote's internal container + ScrollArea */
+.task-notes-editor .bn-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.task-notes-editor .mantine-ScrollArea-root {
+  flex: 1;
+  min-height: 0;
+}
+
+/* Compact padding and font-size for side-panel context */
+.task-notes-editor .bn-editor {
+  padding-inline: 0.75rem;
+  font-size: 0.875rem;
+  line-height: 1.6;
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+}
+
+/* Scale down headings to fit the compact side-panel context */
+.task-notes-editor .bn-editor h1 {
+  font-size: 1.25rem;
+}
+
+.task-notes-editor .bn-editor h2 {
+  font-size: 1.05rem;
+}
+
+.task-notes-editor .bn-editor h3 {
+  font-size: 0.9375rem;
+}
+
+.task-notes-editor .bn-editor h4 {
+  font-size: 0.875rem;
+  font-weight: 700;
+}
+
+.task-notes-editor .bn-editor h5 {
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.task-notes-editor .bn-editor h6 {
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+/* Text colors matching the task color palette — light mode (-500/-600), dark mode (-400) */
+/* BlockNote live editor uses data-style-type="textColor" data-value="<name>" on spans */
+.task-notes-editor .bn-editor [data-style-type="textColor"][data-value="slate"] {
+  color: var(--color-slate-500);
+}
+
+.task-notes-editor .bn-editor [data-style-type="textColor"][data-value="rose"] {
+  color: var(--color-rose-500);
+}
+
+.task-notes-editor .bn-editor [data-style-type="textColor"][data-value="orange"] {
+  color: var(--color-orange-600);
+}
+
+.task-notes-editor .bn-editor [data-style-type="textColor"][data-value="yellow"] {
+  color: var(--color-yellow-600);
+}
+
+.task-notes-editor .bn-editor [data-style-type="textColor"][data-value="lime"] {
+  color: var(--color-lime-600);
+}
+
+.task-notes-editor .bn-editor [data-style-type="textColor"][data-value="emerald"] {
+  color: var(--color-emerald-600);
+}
+
+.task-notes-editor .bn-editor [data-style-type="textColor"][data-value="cyan"] {
+  color: var(--color-cyan-600);
+}
+
+.task-notes-editor .bn-editor [data-style-type="textColor"][data-value="blue"] {
+  color: var(--color-blue-600);
+}
+
+.task-notes-editor .bn-editor [data-style-type="textColor"][data-value="violet"] {
+  color: var(--color-violet-600);
+}
+
+.task-notes-editor .bn-editor [data-style-type="textColor"][data-value="fuchsia"] {
+  color: var(--color-fuchsia-600);
+}
+
+:is(.dark .task-notes-editor .bn-editor) [data-style-type="textColor"][data-value="slate"] {
+  color: var(--color-slate-400);
+}
+
+:is(.dark .task-notes-editor .bn-editor) [data-style-type="textColor"][data-value="rose"] {
+  color: var(--color-rose-400);
+}
+
+:is(.dark .task-notes-editor .bn-editor) [data-style-type="textColor"][data-value="orange"] {
+  color: var(--color-orange-400);
+}
+
+:is(.dark .task-notes-editor .bn-editor) [data-style-type="textColor"][data-value="yellow"] {
+  color: var(--color-yellow-400);
+}
+
+:is(.dark .task-notes-editor .bn-editor) [data-style-type="textColor"][data-value="lime"] {
+  color: var(--color-lime-400);
+}
+
+:is(.dark .task-notes-editor .bn-editor) [data-style-type="textColor"][data-value="emerald"] {
+  color: var(--color-emerald-400);
+}
+
+:is(.dark .task-notes-editor .bn-editor) [data-style-type="textColor"][data-value="cyan"] {
+  color: var(--color-cyan-400);
+}
+
+:is(.dark .task-notes-editor .bn-editor) [data-style-type="textColor"][data-value="blue"] {
+  color: var(--color-blue-400);
+}
+
+:is(.dark .task-notes-editor .bn-editor) [data-style-type="textColor"][data-value="violet"] {
+  color: var(--color-violet-400);
+}
+
+:is(.dark .task-notes-editor .bn-editor) [data-style-type="textColor"][data-value="fuchsia"] {
+  color: var(--color-fuchsia-400);
+}
+
+/* Inline code — background pill, monospace font */
+.task-notes-editor .bn-editor :not(pre)>code {
+  background: color-mix(in srgb, var(--color-slate-500) 12%, transparent);
+  border: 1px solid color-mix(in srgb, var(--color-slate-500) 18%, transparent);
+  padding: 0.1em 0.4em;
+  border-radius: 4px;
+  font-size: 0.82em;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+}
+
+/* Transparent editor background — inherits panel bg */
+.task-notes-editor .bn-container {
+  --bn-colors-editor-background: transparent;
+}
+
+/* Code block — consistent dark bg in both light and dark mode */
+.task-notes-editor .bn-block-content[data-content-type=codeBlock] {
+  background-color: var(--color-slate-800);
+  border-radius: 6px;
+}
+
+/* Shiki github-dark token colors via inline styles — no extra CSS needed,
+   but ensure the pre/code font is monospace and readable */
+.task-notes-editor .bn-block-content[data-content-type=codeBlock] pre {
+  font-size: 0.75rem;
+  line-height: 1.6;
+  padding: 25px 20px 10px;
+  margin-block: 5px;
+}
+
+/* Code block language select — trigger button */
+.task-notes-editor .bn-block-content[data-content-type=codeBlock]>div>select {
+  appearance: none;
+  -webkit-appearance: none;
+  position: absolute;
+  top: 8px;
+  left: 12px;
+  padding: 3px 20px 3px 8px;
+  font-size: 0.6875rem;
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  font-weight: 500;
+  color: var(--color-slate-500);
+  background-color: transparent;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  cursor: pointer;
+  opacity: 1;
+  transition: background-color 0.15s, border-color 0.15s, color 0.15s;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 4px center;
+}
+
+.task-notes-editor .bn-block-content[data-content-type=codeBlock]>div>select:hover,
+.task-notes-editor .bn-block-content[data-content-type=codeBlock]>div>select:focus {
+  color: var(--color-slate-400);
+  background-color: rgba(255, 255, 255, 0.08);
+  border-color: color-mix(in srgb, var(--color-slate-400) 25%, transparent);
+  outline: none;
+  transition-delay: 0s;
+}
+
+/* Fallback option styling for browsers without ::picker support */
+.task-notes-editor .bn-block-content[data-content-type=codeBlock]>div>select>option {
+  background-color: var(--color-slate-800);
+  color: var(--color-slate-300);
+}
+
+/* ── Customizable select (Chrome 130+, progressive enhancement) ───────── */
+
+/* Token variables — adjust here to restyle the entire picker */
+.task-notes-editor .bn-block-content[data-content-type=codeBlock] {
+  --cb-picker-bg:             var(--color-slate-800);  /* popup background       */
+  --cb-picker-border:         var(--color-slate-700);  /* popup border            */
+  --cb-option-text:           var(--color-slate-300);  /* default option text     */
+  --cb-option-hover-bg:       var(--color-slate-700);  /* option hover background */
+  --cb-option-hover-text:     var(--color-slate-100);  /* option hover text       */
+  --cb-option-active-bg:      color-mix(in srgb, var(--color-blue-900) 30%, transparent); /* selected bg */
+  --cb-option-active-text:    var(--color-blue-400);   /* selected text + checkmark */
+  --cb-scrollbar-thumb:       var(--color-slate-600);  /* scrollbar thumb         */
+  --cb-scrollbar-thumb-hover: var(--color-slate-500);  /* scrollbar thumb hover   */
+}
+
+@supports (appearance: base-select) {
+  .task-notes-editor .bn-block-content[data-content-type=codeBlock]>div>select {
+    appearance: base-select;
+    background-image: none;
+    padding-right: 20px;
+  }
+
+  .task-notes-editor .bn-block-content[data-content-type=codeBlock]>div>select::picker-icon {
+    display: none;
+  }
+
+  /* Popup */
+  .task-notes-editor .bn-block-content[data-content-type=codeBlock]>div>select::picker(select) {
+    appearance: base-select;
+    background-color: var(--cb-picker-bg);
+    border: 1px solid var(--cb-picker-border);
+    border-radius: 0.75rem;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.4), 0 8px 10px -6px rgba(0, 0, 0, 0.3);
+    padding: 6px;
+    min-width: 9rem;
+    max-height: 15rem;
+    overflow-y: auto;
+    overflow-x: hidden;
+    scrollbar-width: thin;
+    scrollbar-color: var(--cb-scrollbar-thumb) transparent;
+    font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    font-size: 0.6875rem;
+  }
+
+  /* Webkit scrollbar */
+  .task-notes-editor .bn-block-content[data-content-type=codeBlock]>div>select::picker(select)::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  .task-notes-editor .bn-block-content[data-content-type=codeBlock]>div>select::picker(select)::-webkit-scrollbar-track {
+    background: transparent;
+    border-radius: 0 0.75rem 0.75rem 0;
+  }
+
+  .task-notes-editor .bn-block-content[data-content-type=codeBlock]>div>select::picker(select)::-webkit-scrollbar-thumb {
+    background-color: var(--cb-scrollbar-thumb);
+    border-radius: 9999px;
+    border: 2px solid transparent;
+    background-clip: content-box;
+  }
+
+  .task-notes-editor .bn-block-content[data-content-type=codeBlock]>div>select::picker(select)::-webkit-scrollbar-thumb:hover {
+    background-color: var(--cb-scrollbar-thumb-hover);
+  }
+
+  /* Option */
+  .task-notes-editor .bn-block-content[data-content-type=codeBlock]>div>select>option {
+    display: flex;
+    align-items: center;
+    background-color: transparent;
+    color: var(--cb-option-text);
+    padding: 6px 10px;
+    border-radius: 0.5rem;
+    font-weight: 500;
+    cursor: pointer;
+  }
+
+  /* Checkmark — Lucide Check SVG, pushed to the right */
+  .task-notes-editor .bn-block-content[data-content-type=codeBlock]>div>select>option::checkmark {
+    order: 2;
+    margin-left: auto;
+    padding-left: 8px;
+    line-height: 0;
+    vertical-align: middle;
+    content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='13' height='13' viewBox='0 0 24 24' fill='none' stroke='%2360a5fa' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6 9 17l-5-5'/%3E%3C/svg%3E");
+  }
+
+  .task-notes-editor .bn-block-content[data-content-type=codeBlock]>div>select>option:not(:checked)::checkmark {
+    content: "";
+    padding-left: 21px;
+  }
+
+  /* Hover */
+  .task-notes-editor .bn-block-content[data-content-type=codeBlock]>div>select>option:hover {
+    background-color: var(--cb-option-hover-bg);
+    color: var(--cb-option-hover-text);
+  }
+
+  /* Selected */
+  .task-notes-editor .bn-block-content[data-content-type=codeBlock]>div>select>option:checked {
+    background-color: var(--cb-option-active-bg);
+    color: var(--cb-option-active-text);
+  }
+}
+
+/* Light mode — match app palette */
+.task-notes-editor .bn-container[data-mantine-color-scheme="light"] {
+  background: transparent;
+  --bn-colors-editor-text: var(--color-slate-600);
+  --bn-colors-menu-background: white;
+  --bn-colors-border: var(--color-slate-200);
+  --bn-colors-hovered-background: var(--color-slate-100);
+  --bn-colors-hovered-text: var(--color-slate-700);
+  --bn-colors-selected-background: var(--color-blue-100);
+  --bn-colors-selected-text: var(--color-blue-800);
+  --bn-colors-side-menu: var(--color-slate-400);
+}
+
+/* Dark mode — match app palette */
+.task-notes-editor .bn-container[data-mantine-color-scheme="dark"] {
+  background: transparent;
+  --bn-colors-editor-text: var(--color-slate-300);
+  --bn-colors-menu-background: var(--color-slate-800);
+  --bn-colors-border: var(--color-slate-700);
+  --bn-colors-hovered-background: var(--color-slate-700);
+  --bn-colors-hovered-text: var(--color-slate-200);
+  --bn-colors-selected-background: var(--color-blue-900);
+  --bn-colors-selected-text: var(--color-blue-200);
+  --bn-colors-side-menu: var(--color-slate-500);
+}

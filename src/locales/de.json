@@ -1,0 +1,503 @@
+{
+  "app": {
+    "footer": "Freie Software unter der AGPL-3.0",
+    "sourceCode": "Quellcode"
+  },
+  "dashboard": {
+    "title": "Meine Projekte",
+    "subtitle": "Schnellzugriff auf deine Projekte",
+    "noProjects": "Noch keine Projekte",
+    "noProjectsHint": "Erstelle dein erstes Projekt, um loszulegen.",
+    "openProject": "Projekt öffnen",
+    "noCloudProjects": "Keine Cloud-Projekte vorhanden.",
+    "noLocalProjects": "Keine lokalen Projekte vorhanden."
+  },
+  "offline": {
+    "cloudUnavailable": "Cloud-Projekte sind gerade nicht erreichbar. Prüfe deine Internetverbindung und versuche es erneut.",
+    "cloudUnavailableTitle": "Projekt momentan nicht erreichbar",
+    "cloudUnavailableMessage": "Dieses Projekt wird online gespeichert und ist gerade nicht erreichbar. Prüfe deine Internetverbindung. Lokale Projekte bleiben offline verfügbar.",
+    "backToProjects": "Zur Projektübersicht"
+  },
+  "landing": {
+    "welcome": "Willkommen beim Projekt-Planer",
+    "subtitle": "Erstelle und verwalte deine Projektpläne mit Gantt-Diagramm.",
+    "newLocal": "Lokales Projekt",
+    "newLocalDesc": "Wird im Browser gespeichert",
+    "openFile": "Datei öffnen",
+    "openFileDesc": "JSON-Projektdatei vom Rechner öffnen",
+    "signIn": "Anmelden",
+    "signInHint": "Melde dich an, um Cloud-Projekte zu erstellen und mit anderen zu teilen.",
+    "featureGantt": "Gantt-Diagramm",
+    "featureGanttDesc": "Aufgaben visuell auf einer Zeitleiste planen, per Drag & Drop verschieben und in der Größe ändern.",
+    "featureTeams": "Team-Organisation",
+    "featureTeamsDesc": "Aufgaben in Teams gruppieren, Swimlanes nutzen und Verantwortlichkeiten klar zuweisen.",
+    "featureCloud": "Cloud & Zusammenarbeit",
+    "featureCloudDesc": "Projekte in der Cloud speichern und in Echtzeit mit deinem Team zusammenarbeiten.",
+    "featureExport": "Import & Export",
+    "featureExportDesc": "Projekte als JSON-Datei exportieren, importieren oder lokal im Browser speichern.",
+    "featureDarkMode": "Dunkelmodus",
+    "featureDarkModeDesc": "Wechsle zwischen hellem und dunklem Design — oder lass es automatisch dem System folgen."
+  },
+  "project": {
+    "defaultTitle": "Aufgabenplanung",
+    "newTitle": "Neue Aufgabenplanung",
+    "fallbackTitle": "Plan",
+    "importedTitle": "Importierter Plan",
+    "storageBadge": {
+      "localStorage": "LocalStorage (ID: {{id}})"
+    },
+    "actions": {
+      "new": "Neues Projekt",
+      "open": "Projekt öffnen",
+      "export": "Export",
+      "info": "Hilfe",
+      "history": "Aktivität"
+    },
+    "menu": "Menü"
+  },
+  "language": {
+    "title": "Sprache"
+  },
+  "calendar": {
+    "today": "Heute",
+    "schedule": "Zeitplan",
+    "calendarWeek": "KW",
+    "zoom": {
+      "display": "Anzeige: {{count}} Wochen",
+      "visibleRange": "Sichtbarer Bereich",
+      "weeks": "{{count}} Wochen",
+      "oneYear": "(1 Jahr)",
+      "halfYear": "(½ Jahr)"
+    },
+    "density": {
+      "label": "Zeilenhöhe",
+      "comfortable": "Komfortabel",
+      "compact": "Kompakt",
+      "dense": "Dicht"
+    }
+  },
+  "details": {
+    "title": "Details",
+    "labels": {
+      "taskName": "Aufgabenname",
+      "color": "Farbe",
+      "start": "Start",
+      "duration": "Dauer",
+      "notes": "Notizen",
+      "team": "Team",
+      "assignTeam": "Team zuweisen"
+    },
+    "duration": {
+      "weeks_one": "{{count}} Woche",
+      "weeks_other": "{{count}} Wochen"
+    },
+    "placeholders": {
+      "notes": "Notizen zur Aufgabe..."
+    },
+    "actions": {
+      "deleteTask": "Aufgabe löschen"
+    }
+  },
+  "tasks": {
+    "placeholders": {
+      "enterName": "Aufgabenname eingeben..."
+    },
+    "actions": {
+      "newTask": "Neue Aufgabe"
+    }
+  },
+  "teams": {
+    "unassigned": "Nicht zugewiesen",
+    "renameTooltip": "Doppelklick zum Umbenennen",
+    "taskCount_one": "{{count}} Aufgabe",
+    "taskCount_other": "{{count}} Aufgaben",
+    "moveUp": "Team nach oben",
+    "moveDown": "Team nach unten",
+    "collapse": "Gruppe einklappen",
+    "expand": "Gruppe ausklappen",
+    "deleteTeam": "Team löschen",
+    "placeholders": {
+      "enterName": "Teamname eingeben..."
+    },
+    "viewMode": {
+      "gantt": "Zur Gantt-Ansicht wechseln",
+      "swimlane": "Zur Swimlane-Ansicht wechseln"
+    },
+    "actions": {
+      "newTeam": "Neues Team"
+    }
+  },
+  "dialogs": {
+    "newProject": {
+      "title": "Neues Projekt",
+      "description": "Wo soll das neue Projekt gespeichert werden?",
+      "localStorage": "LocalStorage",
+      "localStorageDesc": "Speichert direkt im Browser-Cache",
+      "fileSystem": "Dateisystem",
+      "fileSystemDesc": "Echte Datei auf deiner Festplatte"
+    },
+    "openProject": {
+      "title": "Projekt öffnen",
+      "localProjects": "Lokale Projekte",
+      "noProjects": "Keine gespeicherten Projekte gefunden.",
+      "lastModified": "Geändert: {{date}}",
+      "externalSources": "Externe Quellen",
+      "jsonImport": "JSON Import",
+      "openFile": "Datei öffnen"
+    },
+    "delete": {
+      "title": "Löschen bestätigen",
+      "defaultMessage": "Möchtest du dieses Element wirklich löschen?",
+      "teamMessage": "Möchtest du dieses Team und alle zugehörigen Aufgaben wirklich löschen?",
+      "taskMessage": "Möchtest du diese Aufgabe wirklich löschen?",
+      "tasksMessage_one": "Möchtest du diese Aufgabe wirklich löschen?",
+      "tasksMessage_other": "Möchtest du diese {{count}} Aufgaben wirklich löschen?",
+      "laneMessage": "Möchtest du diese Lane und alle zugehörigen Aufgaben wirklich löschen?",
+      "projectMessage": "Möchtest du dieses Projekt wirklich löschen? Dieser Vorgang kann nicht rückgängig gemacht werden.",
+      "cancel": "Abbrechen",
+      "confirm": "Löschen"
+    },
+    "includeHistory": {
+      "title": "Aktivitätsprotokoll",
+      "message": "Soll das Aktivitätsprotokoll in die Datei einbezogen werden?",
+      "with": "Mit Protokoll",
+      "without": "Ohne Protokoll"
+    },
+    "addTeam": {
+      "title": "Team hinzufügen",
+      "nameLabel": "Name",
+      "namePlaceholder": "Name des Teams",
+      "viewModeLabel": "Darstellung",
+      "ganttTitle": "Gantt",
+      "ganttDesc": "Horizontale Zeitbalken",
+      "swimlaneTitle": "Swimlane",
+      "swimlaneDesc": "Karten in Wochenspalten",
+      "cancel": "Abbrechen",
+      "submit": "Hinzufügen"
+    },
+    "teamDetail": {
+      "title": "Team bearbeiten",
+      "nameLabel": "Name",
+      "colorLabel": "Farbe",
+      "iconLabel": "Icon",
+      "cancel": "Abbrechen",
+      "save": "Speichern"
+    },
+    "taskOverview": {
+      "title": "Aufgaben",
+      "name": "Aufgabe",
+      "start": "Start",
+      "weeks": "Wochen",
+      "empty": "Keine Aufgaben in diesem Team."
+    }
+  },
+  "lanes": {
+    "addLane": "Neue Lane",
+    "lanePlaceholder": "Lane-Name...",
+    "addTask": "Aufgabe hinzufügen",
+    "deleteLane": "Lane löschen",
+    "renameLane": "Lane umbenennen",
+    "staging": "Nicht zugeordnet"
+  },
+  "info": {
+    "title": "Info",
+    "version": "Version",
+    "author": "Autor",
+    "tech": "Technologie",
+    "license": "Lizenz",
+    "mouseTitle": "Maus-Aktionen",
+    "shortcutsTitle": "Tastenkürzel",
+    "plannedTitle": "Geplant",
+    "shortcuts": {
+      "clickKey": "Linksklick",
+      "tapKey": "Tippen",
+      "tapDesc": "Task auswählen",
+      "pinchKey": "Pinch",
+      "pinchDesc": "Hinein-/Herauszoomen",
+      "swipeKey": "Wischen",
+      "swipeDesc": "Zeitachse verschieben",
+      "ctrlClick": "Task zur Auswahl hinzufügen/entfernen",
+      "shiftClick": "Bereich auswählen",
+      "ctrlA": "Alle Tasks im Team auswählen",
+      "delete": "Ausgewählte Tasks löschen",
+      "dragKey": "Ziehen",
+      "dragDesc": "Task verschieben",
+      "resizeKey": "Kante ziehen",
+      "resizeDesc": "Dauer ändern",
+      "dblClickKey": "Doppelklick",
+      "dblClickDesc": "Team/Lane umbenennen",
+      "scrollKey": "Scrollen",
+      "shiftScrollDesc": "Zeitachse verschieben",
+      "ctrlScrollDesc": "Hinein-/Herauszoomen",
+      "undoDesc": "Rückgängig",
+      "redoDesc": "Wiederholen",
+      "duplicateDesc": "Ausgewählte Tasks duplizieren"
+    }
+  },
+  "auth": {
+    "login": "Anmelden",
+    "register": "Registrieren",
+    "account": "Konto",
+    "signOut": "Abmelden",
+    "unnamed": "Unbenannt",
+    "enterEmail": "Gib deine E-Mail-Adresse ein, um dich anzumelden oder zu registrieren.",
+    "emailPlaceholder": "deine@email.de",
+    "passwordPlaceholder": "Passwort",
+    "passwordConfirmPlaceholder": "Passwort wiederholen",
+    "displayNamePlaceholder": "Benutzername",
+    "continue": "Weiter",
+    "back": "Zurück",
+    "createAccount": "Erstelle ein neues Konto.",
+    "invalidCredentials": "E-Mail oder Passwort ist falsch.",
+    "passwordMismatch": "Die Passwörter stimmen nicht überein.",
+    "passwordTooShort": "Das Passwort muss mindestens 6 Zeichen lang sein.",
+    "forgotPassword": "Passwort vergessen?",
+    "resetPassword": "Passwort zurücksetzen",
+    "resetPasswordDesc": "Wir senden dir einen Link zum Zurücksetzen deines Passworts.",
+    "sendResetLink": "Link senden",
+    "resetLinkSent": "E-Mail gesendet",
+    "resetLinkSentDesc": "Ein Link zum Zurücksetzen wurde an {{email}} gesendet. Prüfe dein Postfach.",
+    "setNewPassword": "Neues Passwort",
+    "setNewPasswordDesc": "Gib dein neues Passwort ein.",
+    "newPasswordPlaceholder": "Neues Passwort",
+    "savePassword": "Passwort speichern",
+    "close": "Schließen",
+    "mfaChallenge": "Zwei-Faktor-Authentifizierung",
+    "mfaDesc": "Gib den 6-stelligen Code aus deiner Authenticator-App ein."
+  },
+  "share": {
+    "title": "Teilen",
+    "dialogTitle": "Projekt teilen",
+    "invite": "Einladen",
+    "emailPlaceholder": "E-Mail-Adresse",
+    "sendInvite": "Einladen",
+    "invited": "Erfolgreich eingeladen!",
+    "inviteSent": "Einladung an {{email}} gesendet! Der Nutzer muss sich zuerst registrieren, um Zugriff zu erhalten.",
+    "cannotInviteSelf": "Du kannst dich nicht selbst einladen.",
+    "inviteError": "Einladung fehlgeschlagen.",
+    "emailFailed": "Einladungs-E-Mail konnte nicht gesendet werden. Bitte prüfe die Konfiguration (RESEND_API_KEY).",
+    "pending": "Einladung ausstehend",
+    "members": "Mitglieder",
+    "noMembers": "Noch keine Mitglieder.",
+    "roleEditor": "Bearbeiter",
+    "roleViewer": "Betrachter",
+    "roleAdmin": "Admin",
+    "roleOwner": "Ersteller",
+    "removeConfirm": "Möchtest du \"{{name}}\" wirklich aus dem Projekt entfernen?",
+    "removeBtn": "Entfernen",
+    "you": "Du",
+    "leaveProject": "Projekt verlassen",
+    "leaveConfirm": "Möchtest du dieses Projekt wirklich verlassen? Du verlierst den Zugriff.",
+    "leaveBtn": "Verlassen",
+    "transferOwnership": "Besitz übertragen",
+    "transferConfirm": "Möchtest du den Projektbesitz an \"{{name}}\" übertragen? Du wirst zum Admin herabgestuft.",
+    "transferBtn": "Übertragen",
+    "resend": "Erneut senden",
+    "resendSuccess": "Einladung erneut gesendet!",
+    "resendError": "Erneutes Senden fehlgeschlagen."
+  },
+  "cloud": {
+    "badge": "Cloud",
+    "savingToCloud": "Wird in Cloud gespeichert...",
+    "savedToCloud": "In Cloud gespeichert",
+    "cloudProjects": "Cloud-Projekte",
+    "noCloudProjects": "Keine Cloud-Projekte gefunden.",
+    "newCloudProject": "Cloud-Projekt",
+    "newCloudProjectDesc": "Speichert in der Cloud, teilbar mit anderen",
+    "convertToCloud": "In Cloud konvertieren"
+  },
+  "settings": {
+    "title": "Einstellungen",
+    "account": {
+      "title": "Account",
+      "displayName": "Anzeigename",
+      "displayNamePlaceholder": "Dein Name",
+      "avatar": "Profilbild",
+      "uploadAvatar": "Bild hochladen",
+      "removeAvatar": "Bild entfernen",
+      "save": "Speichern",
+      "saved": "Gespeichert!"
+    },
+    "display": {
+      "title": "Darstellung",
+      "rowHeight": "Zeilenhöhe",
+      "theme": "Design",
+      "themeSystem": "System",
+      "themeLight": "Hell",
+      "themeDark": "Dunkel",
+      "preview": "Vorschau"
+    },
+    "security": {
+      "title": "Sicherheit",
+      "changeEmail": "E-Mail-Adresse ändern",
+      "currentEmail": "Aktuelle E-Mail",
+      "newEmail": "Neue E-Mail-Adresse",
+      "newEmailPlaceholder": "neue@email.de",
+      "updateEmail": "E-Mail ändern",
+      "emailUpdated": "Bestätigungslink an die neue Adresse gesendet!",
+      "changePassword": "Passwort ändern",
+      "currentPassword": "Aktuelles Passwort",
+
+      "newPassword": "Neues Passwort",
+      "confirmNewPassword": "Neues Passwort wiederholen",
+      "updatePassword": "Passwort aktualisieren",
+      "passwordUpdated": "Passwort erfolgreich geändert!",
+      "passwordMismatch": "Die Passwörter stimmen nicht überein.",
+      "wrongPassword": "Das eingegebene Passwort ist falsch.",
+      "passwordTooShort": "Mindestens 6 Zeichen erforderlich.",
+      "twoFactor": "Zwei-Faktor-Authentifizierung",
+      "twoFactorDesc": "Schütze dein Konto mit einem zusätzlichen Sicherheitsfaktor.",
+      "enable2FA": "2FA aktivieren",
+      "disable2FA": "2FA deaktivieren",
+      "scanQR": "Scanne diesen QR-Code mit deiner Authenticator-App:",
+      "showSecret": "Schlüssel anzeigen",
+      "hideSecret": "Schlüssel verbergen",
+      "copySecret": "Kopieren",
+      "copied": "Kopiert!",
+      "enterCode": "Code eingeben",
+      "codePlaceholder": "6-stelliger Code",
+      "verify": "Bestätigen",
+      "twoFactorEnabled": "2FA ist aktiv.",
+      "twoFactorDisabled": "2FA ist deaktiviert.",
+      "confirmPassword": "Passwort bestätigen",
+      "confirmPasswordDesc": "Gib dein aktuelles Passwort ein, um fortzufahren.",
+      "confirm": "Bestätigen",
+      "deleteAccount": "Konto löschen",
+      "deleteAccountDesc": "Dein Konto und alle zugehörigen Daten werden unwiderruflich gelöscht.",
+      "deleteAccountConfirm": "Möchtest du dein Konto wirklich löschen? Dieser Vorgang kann nicht rückgängig gemacht werden.",
+      "deleteAccountBtn": "Konto unwiderruflich löschen",
+      "typeConfirm": "Gib \"LÖSCHEN\" ein, um zu bestätigen",
+      "confirmWord": "LÖSCHEN"
+    },
+    "back": "Zurück"
+  },
+  "history": {
+    "title": "Aktivitätsprotokoll",
+    "subtitle_one": "{{count}} Eintrag",
+    "subtitle_other": "{{count}} Einträge",
+    "empty": "Noch keine Aktivitäten aufgezeichnet.",
+    "today": "Heute",
+    "yesterday": "Gestern",
+    "actions": {
+      "created": "erstellt",
+      "updated": "aktualisiert",
+      "deleted": "gelöscht",
+      "duplicated": "dupliziert",
+      "moved": "verschoben",
+      "resized": "Dauer geändert"
+    },
+    "entities": {
+      "task": "Aufgabe",
+      "team": "Team",
+      "lane": "Lane",
+      "project": "Projekt"
+    },
+    "fields": {
+      "title": "Name",
+      "name": "Name",
+      "color": "Farbe",
+      "startDate": "Startdatum",
+      "duration": "Dauer",
+      "notes": "Notizen",
+      "teamId": "Team-Zuordnung",
+      "icon": "Icon",
+      "viewMode": "Ansicht"
+    },
+    "by": "von {{name}}",
+    "restoreLabel": "Auf diesen Stand zurücksetzen",
+    "restoreConfirm": "Das Projekt wird auf diesen Zeitpunkt zurückgesetzt. Alle danach vorgenommenen Änderungen gehen unwiederbringlich verloren und können nicht wiederhergestellt werden.",
+    "restoreYes": "Unwiderruflich zurücksetzen",
+    "restoreCancel": "Abbrechen"
+  },
+  "a11y": {
+    "close": "Schließen",
+    "home": "Zur Startseite",
+    "menu": "Menü öffnen",
+    "languageMenu": "Sprache wählen",
+    "accountMenu": "Konto-Menü",
+    "signIn": "Anmelden",
+    "prevWeek": "Vorherige Woche",
+    "nextWeek": "Nächste Woche",
+    "colorPicker": "Farbe wählen",
+    "density": "Zeilendichte",
+    "zoom": "Zoom-Stufe",
+    "deleteProject": "Projekt löschen",
+    "openProject": "Projekt öffnen",
+    "saving": "Wird gespeichert",
+    "activeUsers": "{{count}} aktive Nutzer",
+    "logo": "Projekt-Planer Logo",
+    "save": "Speichern"
+  },
+  "notes": {
+    "toolbar": {
+      "blockType": "Blocktyp",
+      "groups": {
+        "text": "Text",
+        "headings": "Überschriften",
+        "lists": "Listen"
+      },
+      "blocks": {
+        "paragraph": "Text",
+        "quote": "Zitat",
+        "heading1": "Überschrift 1",
+        "heading2": "Überschrift 2",
+        "heading3": "Überschrift 3",
+        "heading4": "Überschrift 4",
+        "heading5": "Überschrift 5",
+        "heading6": "Überschrift 6",
+        "bulletList": "Aufzählung",
+        "numberedList": "Nummerierte Liste",
+        "checkList": "Aufgabenliste",
+        "toggleList": "Toggle-Liste"
+      },
+      "styles": {
+        "bold": "Fett (Strg+B)",
+        "italic": "Kursiv (Strg+I)",
+        "underline": "Unterstrichen (Strg+U)",
+        "strike": "Durchgestrichen",
+        "code": "Inline-Code"
+      },
+      "align": {
+        "left": "Linksbündig",
+        "center": "Zentriert",
+        "right": "Rechtsbündig"
+      },
+      "colors": {
+        "label": "Textfarbe",
+        "default": "Standard",
+        "slate": "Schiefer",
+        "rose": "Rose",
+        "orange": "Orange",
+        "yellow": "Gelb",
+        "lime": "Hellgrün",
+        "emerald": "Smaragd",
+        "cyan": "Cyan",
+        "blue": "Blau",
+        "violet": "Violett",
+        "fuchsia": "Fuchsia"
+      },
+      "nest": "Einrückung erhöhen",
+      "unnest": "Einrückung verringern",
+      "insert": {
+        "label": "Einfügen",
+        "link": "Link",
+        "table": "Tabelle",
+        "codeBlock": "Codeblock",
+        "divider": "Trennlinie"
+      }
+    },
+    "placeholder": "Text eingeben…"
+  },
+  "colors": {
+    "blue": "Blau",
+    "purple": "Lila",
+    "emerald": "Grün",
+    "orange": "Orange",
+    "pink": "Pink",
+    "indigo": "Indigo",
+    "red": "Rot",
+    "slate": "Schiefer",
+    "amber": "Bernstein",
+    "teal": "Petrol"
+  }
+}

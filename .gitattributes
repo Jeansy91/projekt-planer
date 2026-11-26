@@ -1,0 +1,5 @@
+# Standardverhalten: Git entscheidet selbst (meist auto-crlf)
+* text=auto
+
+# Erzwinge LF für alle Shell-Skripte
+*.sh text eol=lf

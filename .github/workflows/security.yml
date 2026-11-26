@@ -1,0 +1,52 @@
+name: Security
+
+# Security checks that run without GitHub Advanced Security.
+on:
+  # Runs as part of build-image.yml on every PR and push to main
+  workflow_call:
+  schedule:
+    # Weekly, so newly published vulnerabilities show up
+    - cron: "17 5 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  dependencies:
+    name: Dependencies (yarn npm audit)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 26
+
+      - run: corepack enable
+
+      - name: Search yarn.lock for known vulnerabilities
+        run: yarn npm audit --all --recursive --severity high --no-deprecations
+
+  secrets:
+    name: Secrets (Gitleaks)
+    runs-on: ubuntu-latest
+    env:
+      GITLEAKS_VERSION: "8.30.1"
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - name: Install Gitleaks
+        run: |
+          base="https://github.com/gitleaks/gitleaks/releases/download/v${GITLEAKS_VERSION}"
+          file="gitleaks_${GITLEAKS_VERSION}_linux_x64.tar.gz"
+          curl -sSfL -o "$RUNNER_TEMP/$file" "$base/$file"
+          curl -sSfL -o "$RUNNER_TEMP/checksums.txt" "$base/gitleaks_${GITLEAKS_VERSION}_checksums.txt"
+          (cd "$RUNNER_TEMP" && grep " $file\$" checksums.txt | sha256sum --check --strict)
+          tar -xzf "$RUNNER_TEMP/$file" -C "$RUNNER_TEMP" gitleaks
+
+      - name: Scan the whole Git history for secrets
+        run: |
+          "$RUNNER_TEMP/gitleaks" git . --redact --verbose

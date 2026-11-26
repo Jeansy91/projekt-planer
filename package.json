@@ -1,0 +1,61 @@
+{
+  "name": "projekt-planer",
+  "private": true,
+  "version": "4.4.5",
+  "description": "Interactive project planner with Gantt chart and swimlane view",
+  "license": "AGPL-3.0-or-later",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Jeansy91/projekt-planer.git"
+  },
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:e2e": "playwright test --project=local",
+    "test:e2e:headed": "playwright test --project=local --headed",
+    "screenshots": "node scripts/take-screenshots.mjs",
+    "test:e2e:cloud": "playwright test --project=cloud"
+  },
+  "dependencies": {
+    "@blocknote/core": "^0.57.0",
+    "@blocknote/mantine": "^0.57.0",
+    "@blocknote/react": "^0.57.0",
+    "@mantine/core": "^9.0.0",
+    "@mantine/hooks": "^9.0.0",
+    "@mantine/utils": "^6.0.22",
+    "@supabase/supabase-js": "^2.119.0",
+    "i18next": "^26.0.0",
+    "i18next-browser-languagedetector": "^8.3.0",
+    "lucide-react": "^1.0.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "react-i18next": "^17.0.0",
+    "react-router-dom": "^7.18.5",
+    "shiki": "^4.6.0"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.65.0",
+    "@tailwindcss/vite": "^4.3.4",
+    "@testing-library/dom": "^10.4.1",
+    "@testing-library/react": "^16.3.2",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "@vitejs/plugin-react": "^6.0.0",
+    "jsdom": "^31.0.0",
+    "postcss": "^8.5.32",
+    "supabase": "^3.0.0",
+    "tailwindcss": "^4.3.4",
+    "vite": "^8.0.0",
+    "vitest": "^5.0.0"
+  },
+  "dependenciesMeta": {
+    "supabase": {
+      "built": false
+    }
+  },
+  "packageManager": "yarn@4.18.1"
+}

@@ -1,0 +1,144 @@
+name: E2E Tests
+
+# Playwright tests against the Vite dev server.
+#  - local: local projects only, no Supabase needed
+#  - cloud: accounts, sharing and realtime against a local Supabase stack
+# Runs on every push to main and, via build-image.yml, on every pull request.
+on:
+  push:
+    branches: [main]
+  workflow_call:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  local:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 26
+
+      - run: corepack enable
+
+      - run: yarn install --immutable
+
+      - name: Get Playwright version
+        id: playwright-version
+        run: echo "version=$(node -p "require('@playwright/test/package.json').version")" >> "$GITHUB_OUTPUT"
+
+      - name: Cache Playwright browsers
+        uses: actions/cache@v6
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-browsers-${{ runner.os }}-${{ steps.playwright-version.outputs.version }}
+
+      - name: Install Playwright browsers
+        run: yarn playwright install --with-deps chromium
+
+      - name: Start dev server
+        run: |
+          yarn dev --host &> dev.log &
+          npx wait-on tcp:5173 --timeout 90000 || (cat dev.log && exit 1)
+
+      - name: Run Playwright tests
+        run: yarn test:e2e
+        env:
+          CI: true
+
+      - name: Upload Playwright results
+        if: failure()
+        uses: actions/upload-artifact@v7
+        with:
+          name: playwright-results-local
+          path: test-results/
+          if-no-files-found: ignore
+
+  cloud:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 26
+
+      - run: corepack enable
+
+      - run: yarn install --immutable
+
+      - name: Get Playwright version
+        id: playwright-version
+        run: echo "version=$(node -p "require('@playwright/test/package.json').version")" >> "$GITHUB_OUTPUT"
+
+      - name: Cache Playwright browsers
+        uses: actions/cache@v6
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-browsers-${{ runner.os }}-${{ steps.playwright-version.outputs.version }}
+
+      - name: Install Playwright browsers
+        run: yarn playwright install --with-deps chromium
+
+      # The CLI version comes from yarn.lock, the same one the Docker image uses.
+      # Studio and imgproxy are not needed for the tests.
+      - name: Start Supabase
+        run: |
+          start=$(date +%s)
+          yarn supabase start -x studio,imgproxy
+          echo "SUPABASE_START_SECONDS=$(( $(date +%s) - start ))" >> "$GITHUB_ENV"
+
+      - name: Export Supabase settings for the dev server
+        run: |
+          yarn --silent supabase status -o env > supabase.env
+          url=$(sed -n 's/^API_URL="\{0,1\}\([^"]*\)"\{0,1\}$/\1/p' supabase.env)
+          key=$(sed -n 's/^\(PUBLISHABLE_KEY\|ANON_KEY\)="\{0,1\}\([^"]*\)"\{0,1\}$/\2/p' supabase.env | head -n 1)
+          test -n "$url" && test -n "$key"
+          echo "SUPABASE_PROJECT_URL=$url" >> "$GITHUB_ENV"
+          echo "SUPABASE_PUBLISHABLE_KEY=$key" >> "$GITHUB_ENV"
+
+      - name: Start dev server
+        run: |
+          yarn dev --host &> dev.log &
+          npx wait-on tcp:5173 --timeout 90000 || (cat dev.log && exit 1)
+
+      - name: Run Playwright tests
+        run: yarn test:e2e:cloud
+        env:
+          CI: true
+
+      - name: Report Supabase resource usage
+        if: always()
+        run: |
+          {
+            echo "### Local Supabase"
+            echo ""
+            echo "Start time: ${SUPABASE_START_SECONDS:-?} s"
+            echo ""
+            echo '```'
+            docker stats --no-stream --format 'table {{.Name}}\t{{.MemUsage}}\t{{.CPUPerc}}'
+            echo '```'
+            echo ""
+            echo '```'
+            free -m
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Supabase logs
+        if: failure()
+        run: |
+          for c in $(docker ps --format '{{.Names}}' | grep '^supabase_'); do
+            echo "::group::$c"; docker logs --tail 200 "$c" 2>&1; echo "::endgroup::"
+          done
+
+      - name: Upload Playwright results
+        if: failure()
+        uses: actions/upload-artifact@v7
+        with:
+          name: playwright-results-cloud
+          path: test-results/
+          if-no-files-found: ignore

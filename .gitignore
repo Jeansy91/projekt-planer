@@ -1,0 +1,55 @@
+# Node
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json
+.pnpm-debug.log
+
+# Build outputs
+dist/
+build/
+.vite/
+
+# Playwright
+/test-results/
+.playwright/
+
+# Local env
+.env
+.env.local
+.env.*.local
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDEs
+.vscode/
+.idea/
+
+# Misc
+*.log
+
+# Yarn (Berry) & cache
+.yarn/cache/
+.yarn/unplugged/
+.yarn/build-state.yml
+.yarn/install-state.gz
+.pnp.*
+
+# Local caches
+.cache/
+.parcel-cache/
+
+# Coverage
+coverage/
+.nyc_output/
+
+# Optional public assets that can be regenerated
+/public/favicon.svg
+
+# Local tool configs (may contain credentials)
+/.claude/
+/.agents/
+.mcp.json

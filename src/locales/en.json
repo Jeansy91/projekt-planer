@@ -1,0 +1,503 @@
+{
+  "app": {
+    "footer": "Free software under the AGPL-3.0",
+    "sourceCode": "Source code"
+  },
+  "dashboard": {
+    "title": "My Projects",
+    "subtitle": "Quick access to your projects",
+    "noProjects": "No projects yet",
+    "noProjectsHint": "Create your first project to get started.",
+    "openProject": "Open Project",
+    "noCloudProjects": "No cloud projects yet.",
+    "noLocalProjects": "No local projects yet."
+  },
+  "offline": {
+    "cloudUnavailable": "Cloud projects are temporarily unavailable. Check your internet connection and try again.",
+    "cloudUnavailableTitle": "Project temporarily unavailable",
+    "cloudUnavailableMessage": "This project is stored online and is temporarily unavailable. Check your internet connection. Local projects remain available offline.",
+    "backToProjects": "Back to projects"
+  },
+  "landing": {
+    "welcome": "Welcome to Project Planner",
+    "subtitle": "Create and manage your project plans with Gantt charts.",
+    "newLocal": "Local Project",
+    "newLocalDesc": "Saved in your browser",
+    "openFile": "Open File",
+    "openFileDesc": "Open a JSON project file from your computer",
+    "signIn": "Sign In",
+    "signInHint": "Sign in to create cloud projects and share them with others.",
+    "featureGantt": "Gantt Chart",
+    "featureGanttDesc": "Visually plan tasks on a timeline, drag & drop to move and resize.",
+    "featureTeams": "Team Organization",
+    "featureTeamsDesc": "Group tasks into teams, use swimlanes and assign responsibilities clearly.",
+    "featureCloud": "Cloud & Collaboration",
+    "featureCloudDesc": "Save projects to the cloud and collaborate with your team in real time.",
+    "featureExport": "Import & Export",
+    "featureExportDesc": "Export projects as JSON files, import them or save locally in your browser.",
+    "featureDarkMode": "Dark Mode",
+    "featureDarkModeDesc": "Switch between light and dark theme — or let it follow your system preference automatically."
+  },
+  "project": {
+    "defaultTitle": "Task Planning",
+    "newTitle": "New Task Planning",
+    "fallbackTitle": "Plan",
+    "importedTitle": "Imported Plan",
+    "storageBadge": {
+      "localStorage": "LocalStorage (ID: {{id}})"
+    },
+    "actions": {
+      "new": "New Project",
+      "open": "Open Project",
+      "export": "Export",
+      "info": "Help",
+      "history": "Activity"
+    },
+    "menu": "Menu"
+  },
+  "language": {
+    "title": "Language"
+  },
+  "calendar": {
+    "today": "Today",
+    "schedule": "Schedule",
+    "calendarWeek": "CW",
+    "zoom": {
+      "display": "View: {{count}} weeks",
+      "visibleRange": "Visible Range",
+      "weeks": "{{count}} weeks",
+      "oneYear": "(1 year)",
+      "halfYear": "(½ year)"
+    },
+    "density": {
+      "label": "Row Height",
+      "comfortable": "Comfortable",
+      "compact": "Compact",
+      "dense": "Dense"
+    }
+  },
+  "details": {
+    "title": "Details",
+    "labels": {
+      "taskName": "Task Name",
+      "color": "Color",
+      "start": "Start",
+      "duration": "Duration",
+      "notes": "Notes",
+      "team": "Team",
+      "assignTeam": "Assign Team"
+    },
+    "duration": {
+      "weeks_one": "{{count}} week",
+      "weeks_other": "{{count}} weeks"
+    },
+    "placeholders": {
+      "notes": "Notes about the task..."
+    },
+    "actions": {
+      "deleteTask": "Delete Task"
+    }
+  },
+  "tasks": {
+    "placeholders": {
+      "enterName": "Enter task name..."
+    },
+    "actions": {
+      "newTask": "New Task"
+    }
+  },
+  "teams": {
+    "unassigned": "Unassigned",
+    "renameTooltip": "Double-click to rename",
+    "taskCount_one": "{{count}} task",
+    "taskCount_other": "{{count}} tasks",
+    "moveUp": "Move team up",
+    "moveDown": "Move team down",
+    "collapse": "Collapse group",
+    "expand": "Expand group",
+    "deleteTeam": "Delete team",
+    "placeholders": {
+      "enterName": "Enter team name..."
+    },
+    "viewMode": {
+      "gantt": "Switch to Gantt view",
+      "swimlane": "Switch to Swimlane view"
+    },
+    "actions": {
+      "newTeam": "New Team"
+    }
+  },
+  "dialogs": {
+    "newProject": {
+      "title": "New Project",
+      "description": "Where should the new project be saved?",
+      "localStorage": "LocalStorage",
+      "localStorageDesc": "Saves directly in browser cache",
+      "fileSystem": "File System",
+      "fileSystemDesc": "Real file on your hard drive"
+    },
+    "openProject": {
+      "title": "Open Project",
+      "localProjects": "Local Projects",
+      "noProjects": "No saved projects found.",
+      "lastModified": "Modified: {{date}}",
+      "externalSources": "External Sources",
+      "jsonImport": "JSON Import",
+      "openFile": "Open File"
+    },
+    "delete": {
+      "title": "Confirm Deletion",
+      "defaultMessage": "Do you really want to delete this element?",
+      "teamMessage": "Do you really want to delete this team and all associated tasks?",
+      "taskMessage": "Do you really want to delete this task?",
+      "tasksMessage_one": "Do you really want to delete this task?",
+      "tasksMessage_other": "Do you really want to delete these {{count}} tasks?",
+      "laneMessage": "Do you really want to delete this lane and all associated tasks?",
+      "projectMessage": "Do you really want to delete this project? This action cannot be undone.",
+      "cancel": "Cancel",
+      "confirm": "Delete"
+    },
+    "includeHistory": {
+      "title": "Activity Log",
+      "message": "Should the activity log be included in the file?",
+      "with": "Include Log",
+      "without": "Without Log"
+    },
+    "addTeam": {
+      "title": "Add Team",
+      "nameLabel": "Name",
+      "namePlaceholder": "Team name",
+      "viewModeLabel": "Display Mode",
+      "ganttTitle": "Gantt",
+      "ganttDesc": "Horizontal timeline bars",
+      "swimlaneTitle": "Swimlane",
+      "swimlaneDesc": "Cards in weekly columns",
+      "cancel": "Cancel",
+      "submit": "Add"
+    },
+    "teamDetail": {
+      "title": "Edit Team",
+      "nameLabel": "Name",
+      "colorLabel": "Color",
+      "iconLabel": "Icon",
+      "cancel": "Cancel",
+      "save": "Save"
+    },
+    "taskOverview": {
+      "title": "Tasks",
+      "name": "Task",
+      "start": "Start",
+      "weeks": "Weeks",
+      "empty": "No tasks in this team."
+    }
+  },
+  "lanes": {
+    "addLane": "New Lane",
+    "lanePlaceholder": "Lane name...",
+    "addTask": "Add task",
+    "deleteLane": "Delete lane",
+    "renameLane": "Rename lane",
+    "staging": "Unassigned"
+  },
+  "info": {
+    "title": "Info",
+    "version": "Version",
+    "author": "Author",
+    "tech": "Technology",
+    "license": "License",
+    "mouseTitle": "Mouse Actions",
+    "shortcutsTitle": "Shortcuts",
+    "plannedTitle": "Planned",
+    "shortcuts": {
+      "clickKey": "Left click",
+      "tapKey": "Tap",
+      "tapDesc": "Select task",
+      "pinchKey": "Pinch",
+      "pinchDesc": "Zoom in/out",
+      "swipeKey": "Swipe",
+      "swipeDesc": "Scroll timeline",
+      "ctrlClick": "Add/remove task from selection",
+      "shiftClick": "Select range",
+      "ctrlA": "Select all tasks in team",
+      "delete": "Delete selected tasks",
+      "dragKey": "Drag",
+      "dragDesc": "Move task",
+      "resizeKey": "Drag edge",
+      "resizeDesc": "Change duration",
+      "dblClickKey": "Double-click",
+      "dblClickDesc": "Rename team/lane",
+      "scrollKey": "Scroll",
+      "shiftScrollDesc": "Scroll timeline",
+      "ctrlScrollDesc": "Zoom in/out",
+      "undoDesc": "Undo",
+      "redoDesc": "Redo",
+      "duplicateDesc": "Duplicate selected tasks"
+    }
+  },
+  "auth": {
+    "login": "Sign In",
+    "register": "Register",
+    "account": "Account",
+    "signOut": "Sign Out",
+    "unnamed": "Unnamed",
+    "enterEmail": "Enter your email to sign in or create an account.",
+    "emailPlaceholder": "your@email.com",
+    "passwordPlaceholder": "Password",
+    "passwordConfirmPlaceholder": "Confirm password",
+    "displayNamePlaceholder": "Username",
+    "continue": "Continue",
+    "back": "Back",
+    "createAccount": "Create a new account.",
+    "invalidCredentials": "Invalid email or password.",
+    "passwordMismatch": "Passwords do not match.",
+    "passwordTooShort": "Password must be at least 6 characters.",
+    "forgotPassword": "Forgot password?",
+    "resetPassword": "Reset Password",
+    "resetPasswordDesc": "We'll send you a link to reset your password.",
+    "sendResetLink": "Send reset link",
+    "resetLinkSent": "Email sent",
+    "resetLinkSentDesc": "A reset link has been sent to {{email}}. Check your inbox.",
+    "setNewPassword": "New Password",
+    "setNewPasswordDesc": "Enter your new password.",
+    "newPasswordPlaceholder": "New password",
+    "savePassword": "Save password",
+    "close": "Close",
+    "mfaChallenge": "Two-Factor Authentication",
+    "mfaDesc": "Enter the 6-digit code from your authenticator app."
+  },
+  "share": {
+    "title": "Share",
+    "dialogTitle": "Share Project",
+    "invite": "Invite",
+    "emailPlaceholder": "Email address",
+    "sendInvite": "Invite",
+    "invited": "Successfully invited!",
+    "inviteSent": "Invitation sent to {{email}}! They need to register first to get access.",
+    "cannotInviteSelf": "You cannot invite yourself.",
+    "inviteError": "Invitation failed.",
+    "emailFailed": "Invitation email could not be sent. Please check the configuration (RESEND_API_KEY).",
+    "pending": "Invitation pending",
+    "members": "Members",
+    "noMembers": "No members yet.",
+    "roleEditor": "Editor",
+    "roleViewer": "Viewer",
+    "roleAdmin": "Admin",
+    "roleOwner": "Owner",
+    "removeConfirm": "Do you really want to remove \"{{name}}\" from this project?",
+    "removeBtn": "Remove",
+    "you": "You",
+    "leaveProject": "Leave Project",
+    "leaveConfirm": "Do you really want to leave this project? You will lose access.",
+    "leaveBtn": "Leave",
+    "transferOwnership": "Transfer Ownership",
+    "transferConfirm": "Do you want to transfer ownership to \"{{name}}\"? You will be downgraded to Admin.",
+    "transferBtn": "Transfer",
+    "resend": "Resend",
+    "resendSuccess": "Invitation resent!",
+    "resendError": "Resend failed."
+  },
+  "cloud": {
+    "badge": "Cloud",
+    "savingToCloud": "Saving to cloud...",
+    "savedToCloud": "Saved to cloud",
+    "cloudProjects": "Cloud Projects",
+    "noCloudProjects": "No cloud projects found.",
+    "newCloudProject": "Cloud Project",
+    "newCloudProjectDesc": "Saves to the cloud, shareable with others",
+    "convertToCloud": "Convert to Cloud"
+  },
+  "settings": {
+    "title": "Settings",
+    "account": {
+      "title": "Account",
+      "displayName": "Display Name",
+      "displayNamePlaceholder": "Your name",
+      "avatar": "Profile Picture",
+      "uploadAvatar": "Upload picture",
+      "removeAvatar": "Remove picture",
+      "save": "Save",
+      "saved": "Saved!"
+    },
+    "display": {
+      "title": "Display",
+      "rowHeight": "Row Height",
+      "theme": "Theme",
+      "themeSystem": "System",
+      "themeLight": "Light",
+      "themeDark": "Dark",
+      "preview": "Preview"
+    },
+    "security": {
+      "title": "Security",
+      "changeEmail": "Change Email",
+      "currentEmail": "Current Email",
+      "newEmail": "New Email Address",
+      "newEmailPlaceholder": "new@email.com",
+      "updateEmail": "Update Email",
+      "emailUpdated": "Confirmation link sent to the new address!",
+      "changePassword": "Change Password",
+      "currentPassword": "Current Password",
+
+      "newPassword": "New Password",
+      "confirmNewPassword": "Repeat new password",
+      "updatePassword": "Update Password",
+      "passwordUpdated": "Password updated successfully!",
+      "passwordMismatch": "Passwords do not match.",
+      "wrongPassword": "The password you entered is incorrect.",
+      "passwordTooShort": "Must be at least 6 characters.",
+      "twoFactor": "Two-Factor Authentication",
+      "twoFactorDesc": "Protect your account with an additional security factor.",
+      "enable2FA": "Enable 2FA",
+      "disable2FA": "Disable 2FA",
+      "scanQR": "Scan this QR code with your authenticator app:",
+      "showSecret": "Show secret key",
+      "hideSecret": "Hide secret key",
+      "copySecret": "Copy",
+      "copied": "Copied!",
+      "enterCode": "Enter code",
+      "codePlaceholder": "6-digit code",
+      "verify": "Verify",
+      "twoFactorEnabled": "2FA is active.",
+      "twoFactorDisabled": "2FA is disabled.",
+      "confirmPassword": "Confirm Password",
+      "confirmPasswordDesc": "Enter your current password to continue.",
+      "confirm": "Confirm",
+      "deleteAccount": "Delete Account",
+      "deleteAccountDesc": "Your account and all associated data will be permanently deleted.",
+      "deleteAccountConfirm": "Do you really want to delete your account? This action cannot be undone.",
+      "deleteAccountBtn": "Permanently delete account",
+      "typeConfirm": "Type \"DELETE\" to confirm",
+      "confirmWord": "DELETE"
+    },
+    "back": "Back"
+  },
+  "history": {
+    "title": "Activity Log",
+    "subtitle_one": "{{count}} entry",
+    "subtitle_other": "{{count}} entries",
+    "empty": "No activity recorded yet.",
+    "today": "Today",
+    "yesterday": "Yesterday",
+    "actions": {
+      "created": "created",
+      "updated": "updated",
+      "deleted": "deleted",
+      "duplicated": "duplicated",
+      "moved": "moved",
+      "resized": "resized"
+    },
+    "entities": {
+      "task": "Task",
+      "team": "Team",
+      "lane": "Lane",
+      "project": "Project"
+    },
+    "fields": {
+      "title": "Name",
+      "name": "Name",
+      "color": "Color",
+      "startDate": "Start date",
+      "duration": "Duration",
+      "notes": "Notes",
+      "teamId": "Team assignment",
+      "icon": "Icon",
+      "viewMode": "View mode"
+    },
+    "by": "by {{name}}",
+    "restoreLabel": "Restore to this point",
+    "restoreConfirm": "The project will be restored to this point in time. All changes made afterwards will be permanently lost and cannot be recovered.",
+    "restoreYes": "Restore permanently",
+    "restoreCancel": "Cancel"
+  },
+  "a11y": {
+    "close": "Close",
+    "home": "Go to home",
+    "menu": "Open menu",
+    "languageMenu": "Select language",
+    "accountMenu": "Account menu",
+    "signIn": "Sign in",
+    "prevWeek": "Previous week",
+    "nextWeek": "Next week",
+    "colorPicker": "Choose color",
+    "density": "Row density",
+    "zoom": "Zoom level",
+    "deleteProject": "Delete project",
+    "openProject": "Open project",
+    "saving": "Saving",
+    "activeUsers": "{{count}} active users",
+    "logo": "Projekt-Planer Logo",
+    "save": "Save"
+  },
+  "notes": {
+    "toolbar": {
+      "blockType": "Block type",
+      "groups": {
+        "text": "Text",
+        "headings": "Headings",
+        "lists": "Lists"
+      },
+      "blocks": {
+        "paragraph": "Text",
+        "quote": "Quote",
+        "heading1": "Heading 1",
+        "heading2": "Heading 2",
+        "heading3": "Heading 3",
+        "heading4": "Heading 4",
+        "heading5": "Heading 5",
+        "heading6": "Heading 6",
+        "bulletList": "Bullet List",
+        "numberedList": "Numbered List",
+        "checkList": "Check List",
+        "toggleList": "Toggle List"
+      },
+      "styles": {
+        "bold": "Bold (Ctrl+B)",
+        "italic": "Italic (Ctrl+I)",
+        "underline": "Underline (Ctrl+U)",
+        "strike": "Strikethrough",
+        "code": "Inline code"
+      },
+      "align": {
+        "left": "Align left",
+        "center": "Align center",
+        "right": "Align right"
+      },
+      "colors": {
+        "label": "Text color",
+        "default": "Default",
+        "slate": "Slate",
+        "rose": "Rose",
+        "orange": "Orange",
+        "yellow": "Yellow",
+        "lime": "Lime",
+        "emerald": "Emerald",
+        "cyan": "Cyan",
+        "blue": "Blue",
+        "violet": "Violet",
+        "fuchsia": "Fuchsia"
+      },
+      "nest": "Increase indent",
+      "unnest": "Decrease indent",
+      "insert": {
+        "label": "Insert",
+        "link": "Link",
+        "table": "Table",
+        "codeBlock": "Code Block",
+        "divider": "Divider"
+      }
+    },
+    "placeholder": "Enter text…"
+  },
+  "colors": {
+    "blue": "Blue",
+    "purple": "Purple",
+    "emerald": "Green",
+    "orange": "Orange",
+    "pink": "Pink",
+    "indigo": "Indigo",
+    "red": "Red",
+    "slate": "Slate",
+    "amber": "Amber",
+    "teal": "Teal"
+  }
+}

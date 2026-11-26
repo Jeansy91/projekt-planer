@@ -1,0 +1,64 @@
+name: Bug report
+description: Something does not work as expected
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting a bug! Please do **not** report security problems here, see SECURITY.md instead.
+        Never paste Supabase keys, access tokens or passwords into an issue.
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened?
+      description: What did you do, what did you expect, and what happened instead?
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. Go to ...
+        2. Click on ...
+        3. See error
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Version
+      description: Image tag or commit, for example `4.4.5` or `latest`
+    validations:
+      required: true
+  - type: dropdown
+    id: install
+    attributes:
+      label: How do you run Projekt-Planer?
+      options:
+        - Docker image from ghcr.io
+        - Self-built Docker image
+        - Locally with yarn dev
+    validations:
+      required: true
+  - type: dropdown
+    id: storage
+    attributes:
+      label: Where is the project stored?
+      options:
+        - Browser (LocalStorage)
+        - Local file (File System Access API)
+        - Cloud (Supabase)
+    validations:
+      required: true
+  - type: input
+    id: browser
+    attributes:
+      label: Browser and OS
+      placeholder: e.g. Chrome 142 on Windows 11
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs
+      description: Browser console or container output, with personal data removed
+      render: text
