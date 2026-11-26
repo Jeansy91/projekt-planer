@@ -19,6 +19,8 @@ COPY --from=build /app/dist /usr/share/nginx/html
 COPY docker/nginx.conf /etc/nginx/conf.d/default.conf
 COPY supabase/migrations /migrations/
 COPY supabase/functions /supabase-functions/
+# Served for self-hosted Supabase Auth (GOTRUE_MAILER_TEMPLATES_*)
+COPY supabase/email-templates /usr/share/nginx/html/email-templates/
 COPY --chmod=755 docker/entrypoint.sh /docker-entrypoint.sh
 EXPOSE 80
 ENTRYPOINT ["/docker-entrypoint.sh"]

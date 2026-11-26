@@ -51,6 +51,17 @@ if [ -n "$PROJEKT_PLANER_URL" ] && [ -n "$SUPABASE_ACCESS_TOKEN" ] && [ -n "$SUP
     || echo "[entrypoint] Warning: Failed to update site_url"
 fi
 
+# Self-hosted Supabase: copy the Edge Functions into the folder the
+# edge-runtime container serves (see docker/compose.self-hosted.yml)
+if [ -n "$FUNCTIONS_DIR" ]; then
+  if [ -d "$FUNCTIONS_DIR" ]; then
+    echo "[entrypoint] Copying Edge Functions to $FUNCTIONS_DIR..."
+    cp -r /supabase-functions/. "$FUNCTIONS_DIR"/
+  else
+    echo "[entrypoint] Warning: FUNCTIONS_DIR $FUNCTIONS_DIR does not exist"
+  fi
+fi
+
 # Deploy Edge Functions if Supabase credentials are set
 if [ -n "$SUPABASE_ACCESS_TOKEN" ] && [ -n "$SUPABASE_PROJECT_REF" ]; then
   echo "[entrypoint] Deploying Edge Functions..."

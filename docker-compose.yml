@@ -1,0 +1,16 @@
+# Projekt-Planer with a hosted Supabase project (or local projects only).
+#
+#   cp .env.example .env    # fill in the Supabase values, or leave them empty
+#   docker compose up -d
+#
+# For a fully self-hosted setup including Supabase, see
+# docker/compose.self-hosted.yml and docs/deployment.md.
+services:
+  projekt-planer:
+    image: ghcr.io/jeansy91/projekt-planer:${PROJEKT_PLANER_VERSION:-latest}
+    restart: unless-stopped
+    ports:
+      - "${PROJEKT_PLANER_PORT:-8080}:80"
+    env_file:
+      - path: .env
+        required: false

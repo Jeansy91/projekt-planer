@@ -25,6 +25,16 @@ These variables are read only by `docker/entrypoint.sh`. Leave a variable empty 
 | `SUPABASE_ACCESS_TOKEN`, `SUPABASE_PROJECT_REF` | Deploys the Edge Functions and sets their secrets through the Management API |
 | `PROJEKT_PLANER_URL` | Public URL of the instance. Set as the Supabase auth `site_url` and as the fallback link target in invitation mails |
 | `SMTP_HOSTNAME`, `SMTP_PORT`, `SMTP_USERNAME`, `SMTP_PASSWORD`, `SMTP_FROM` | Stored as Edge Function secrets for `invite-user` |
+| `FUNCTIONS_DIR` | Self-hosted Supabase: copies the Edge Functions into this folder, which the edge runtime serves |
+
+## Docker Compose
+
+| Variable | Default | Description |
+|---|---|---|
+| `PROJEKT_PLANER_VERSION` | `latest` | Image tag of `ghcr.io/jeansy91/projekt-planer` |
+| `PROJEKT_PLANER_PORT` | `8080` | Host port of the app |
+
+`docker/compose.self-hosted.yml` reads its values from the `.env` of the official Supabase setup (`SUPABASE_PUBLIC_URL`, `ANON_KEY`, `POSTGRES_*`, `SITE_URL`, `SMTP_*`). See [Deployment](deployment.md#self-hosted-supabase).
 
 ## Edge Function secrets
 

@@ -65,17 +65,14 @@ curl -o .env https://raw.githubusercontent.com/Jeansy91/projekt-planer/main/.env
 
 Instead of `latest` you can pin a version, for example `ghcr.io/jeansy91/projekt-planer:<version>`. All versions are listed under [Releases](https://github.com/Jeansy91/projekt-planer/releases).
 
-With Docker Compose:
+With Docker Compose, using the [`docker-compose.yml`](docker-compose.yml) from this repository:
 
-```yaml
-services:
-  projekt-planer:
-    image: ghcr.io/jeansy91/projekt-planer:latest
-    env_file: .env
-    ports:
-      - "8080:80"
-    restart: unless-stopped
+```bash
+curl -O https://raw.githubusercontent.com/Jeansy91/projekt-planer/main/docker-compose.yml
+docker compose up -d
 ```
+
+To run your own Supabase as well, [`docker/compose.self-hosted.yml`](docker/compose.self-hosted.yml) extends the official Supabase Docker setup with Projekt-Planer. The steps are in [Deployment](docs/deployment.md#self-hosted-supabase).
 
 To build the image yourself, run `docker build -t projekt-planer .` in the repository.
 
@@ -177,11 +174,12 @@ supabase/
 e2e/
   tests/                # E2E tests with local projects
   cloud/                # E2E tests against Supabase
-docker/                 # nginx.conf and the container entrypoint
+docker/                 # nginx.conf, container entrypoint, self-hosted compose file
 docs/                   # User guide, technical docs, ADRs
 public/                 # Static assets and screenshots
 scripts/                # Screenshot generator
 Dockerfile
+docker-compose.yml      # App only, with hosted Supabase or local projects
 ```
 
 See [Architecture](docs/architecture.md) for details.
