@@ -45,11 +45,10 @@ test('should_give_invited_user_access_and_live_updates_when_project_is_shared', 
   await memberContext.close();
 });
 
-test('should_persist_title_when_renamed_while_project_is_still_loading', async ({ browser }) => {
+test('should_persist_title_when_renamed_as_soon_as_project_is_loaded', async ({ browser }) => {
   test.setTimeout(120000);
 
-  // Arrange: slow down the last request of the project boot so the rename
-  // lands before the project id is applied to the sync layer
+  // Arrange: slow down the project boot to cover the window right after loading
   const ownerContext = await browser.newContext();
   const memberContext = await browser.newContext();
   const owner = await ownerContext.newPage();
@@ -63,11 +62,13 @@ test('should_persist_title_when_renamed_while_project_is_still_loading', async (
     await route.continue();
   });
 
-  // Act: create, rename while loading, then share without any artificial wait
-  await test.step('rename while project is loading', async () => {
+  // Act: create, rename once loaded, then share without any artificial wait
+  await test.step('rename as soon as project is loaded', async () => {
     await owner.click('[data-testid="dashboard-new-project"]');
     await owner.click('[data-testid="new-project-cloud"]');
     await owner.waitForURL(/\/project\//);
+    // Editing is locked while loading, so wait for the lock to lift
+    await expect(owner.locator('[data-testid="add-team-btn"]')).toBeVisible({ timeout: 15000 });
     await owner.click('[data-testid="project-title"]');
     await owner.fill('[data-testid="project-title-input"]', title);
     await owner.keyboard.press('Enter');

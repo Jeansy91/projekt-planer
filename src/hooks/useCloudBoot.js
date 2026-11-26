@@ -1,4 +1,4 @@
-import { useRef, useEffect } from 'react';
+import { useRef, useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
@@ -16,6 +16,12 @@ export const useCloudBoot = ({
   const location = useLocation();
   const { t } = useTranslation();
   const urlBootDone = useRef(false);
+  // True from the first render of a project URL until every state update of the
+  // boot has been applied, so nothing is editable while the project is half loaded.
+  const [isProjectLoading, setIsProjectLoading] = useState(() => {
+    const s = location.state;
+    return !!urlProjectId && !(s?.newLocal || s?.importedJson || s?.newFile || s?.openFileData);
+  });
 
   useEffect(() => {
     if (urlBootDone.current || !urlProjectId) return;
@@ -72,6 +78,7 @@ export const useCloudBoot = ({
     // Try loading as local project first
     if (openProject(urlProjectId)) {
       urlBootDone.current = true;
+      setIsProjectLoading(false);
       setStorageType('local');
       return;
     }
@@ -92,12 +99,10 @@ export const useCloudBoot = ({
       return;
     }
     urlBootDone.current = true;
+    setIsProjectLoading(true);
     sbProject.loadProject(urlProjectId).then(async (data) => {
       if (!data) { navigate('/', { replace: true }); return; }
       suppressDetection?.();
-      setProjectTitle(data.title);
-      setCloudOwnerId(data.ownerId);
-      setProjectRole(data.role);
 
       // Load per-user view settings (zoom, scroll position, collapsed teams)
       const userSettings = await sbProject.loadUserProjectSettings(urlProjectId);
@@ -120,11 +125,22 @@ export const useCloudBoot = ({
       // Tell Cloud sync which title the DB holds, so a rename made while the
       // project was loading is flushed instead of adopted as the baseline.
       seedTitleBaseline?.(data.id, data.title);
+      // Apply everything in one batch so a half loaded project is never shown.
       setProjectId(data.id);
+      setProjectTitle(data.title);
+      setCloudOwnerId(data.ownerId);
+      setProjectRole(data.role);
       setTeams(loadedTeams);
       setTasks(data.tasks);
       // density is loaded by useUserSettings hook, not from project
       setStorageType('cloud');
+      setIsProjectLoading(false);
+    }).catch((err) => {
+      console.error('loadProject failed:', err);
+      setIsProjectLoading(false);
+      navigate('/', { replace: true });
     });
   }, [urlProjectId, user, sbProject, authLoading, isCloudAvailable, isCloudAvailabilityChecked]);
+
+  return { isProjectLoading };
 };

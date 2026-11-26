@@ -27,7 +27,7 @@ import CalendarHeader from './components/CalendarHeader';
 import TaskGrid from './components/TaskGrid';
 import TaskDetailsPanel from './components/TaskDetailsPanel';
 import { DeleteConfirmDialog, AddTeamModal, TeamDetailModal, TaskOverviewModal, InfoModal, HistoryModal, IncludeHistoryDialog, AuthModal, ShareProjectModal } from './components/dialogs';
-import { Plus, GripVertical } from 'lucide-react';
+import { Plus, GripVertical, Loader2 } from 'lucide-react';
 
 const App = ({ auth, sbProject, theme, onThemeChange, isCloudAvailable, isCloudAvailabilityChecked }) => {
   const { projectId: urlProjectId } = useParams();
@@ -101,7 +101,6 @@ const App = ({ auth, sbProject, theme, onThemeChange, isCloudAvailable, isCloudA
   const [pendingHistoryAction, setPendingHistoryAction] = useState(null); // 'export' | 'newFile' | null
   const [cloudOwnerId, setCloudOwnerId] = useState(null);
   const [projectRole, setProjectRole] = useState(null); // 'owner' | 'admin' | 'editor' | 'viewer' | null
-  const canEdit = storageType !== 'cloud' || (projectRole !== 'viewer' && isCloudAvailable);
 
   const splitContainerRef = useRef(null);
   const splitDividerRef = useRef(null);
@@ -168,8 +167,6 @@ const App = ({ auth, sbProject, theme, onThemeChange, isCloudAvailable, isCloudA
     }
   };
 
-  useKeyboardShortcuts(tasks, selectedTaskIds, setSelectedTaskIds, showDeleteConfirm, requestDeleteTasks, handleDuplicate, canEdit, undo, redo);
-
   // ── Cloud sync (bidirectional) ──────────────────────────────────────
   const cloudEnabled = storageType === 'cloud';
   const collapsedTeamIds = useMemo(() => teams.filter(t => t.collapsed).map(t => t.id), [teams]);
@@ -222,7 +219,7 @@ const App = ({ auth, sbProject, theme, onThemeChange, isCloudAvailable, isCloudA
   }, [storageType, projectId]);
 
   // Load project based on URL parameter
-  useCloudBoot({
+  const { isProjectLoading } = useCloudBoot({
     urlProjectId, user, sbProject, authLoading, isSupabaseConfigured, isCloudAvailable,
     isCloudAvailabilityChecked,
     setProjectId, setProjectTitle, setTasks, setTeams,
@@ -233,6 +230,11 @@ const App = ({ auth, sbProject, theme, onThemeChange, isCloudAvailable, isCloudA
     suppressDetection,
     seedTitleBaseline,
   });
+
+  // Nothing is editable until the project is fully loaded (title, teams and tasks are applied together)
+  const canEdit = !isProjectLoading && (storageType !== 'cloud' || (projectRole !== 'viewer' && isCloudAvailable));
+
+  useKeyboardShortcuts(tasks, selectedTaskIds, setSelectedTaskIds, showDeleteConfirm, requestDeleteTasks, handleDuplicate, canEdit, undo, redo);
 
   const handleConvertToCloud = async () => {
     if (!isCloudAvailable) return;
@@ -439,6 +441,7 @@ const App = ({ auth, sbProject, theme, onThemeChange, isCloudAvailable, isCloudA
         onSignOut={async () => { await signOut(); if (storageType === 'cloud') navigate('/', { replace: true }); }}
         activeUsers={activeUsers}
         canEdit={canEdit}
+        isLoading={isProjectLoading}
         theme={theme}
         onThemeChange={onThemeChange}
         onUndo={undo}
@@ -473,6 +476,7 @@ const App = ({ auth, sbProject, theme, onThemeChange, isCloudAvailable, isCloudA
             density={density} onDensityChange={setDensity} />
 
           <div ref={containerRef} data-testid="calendar-grid" onMouseDown={handleCanvasMouseDown}
+            aria-busy={isProjectLoading}
             className="relative flex-1 min-h-0 overflow-auto scroll-smooth">
             <div className="relative px-4 pt-2 pb-4 bg-grid dark:bg-slate-800 min-h-full">
               <div className="absolute top-0 bottom-0 left-4 right-4 flex pointer-events-none">
@@ -501,6 +505,15 @@ const App = ({ auth, sbProject, theme, onThemeChange, isCloudAvailable, isCloudA
                 canEdit={canEdit} />
             </div>
           </div>
+
+          {isProjectLoading && (
+            <div data-testid="project-loading" role="status" className="absolute inset-0 z-30 flex items-center justify-center bg-white/60 dark:bg-slate-800/60 backdrop-blur-[1px]">
+              <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 shadow-md text-sm font-medium text-slate-600 dark:text-slate-300">
+                <Loader2 size={16} className="animate-spin text-blue-500" aria-hidden="true" />
+                {t('project.loading')}
+              </div>
+            </div>
+          )}
 
           {canEdit && (
             <div className="border-t border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 px-4 py-2 shrink-0">
