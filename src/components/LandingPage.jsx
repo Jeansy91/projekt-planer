@@ -160,7 +160,7 @@ const LandingPage = ({ isSupabaseConfigured, isCloudAvailable, isCloudAvailabili
             </div>
             {isSupabaseConfigured && (
               <button
-                data-testid="auth-btn"
+                data-testid="landing-sign-in-btn"
                 onClick={onAuth}
                 disabled={!isCloudAvailable}
                 className="h-8 flex items-center gap-2 px-3 rounded-lg bg-slate-900 dark:bg-slate-100 text-white dark:text-slate-900 hover:bg-slate-800 dark:hover:bg-white disabled:cursor-not-allowed disabled:opacity-50 transition-colors text-xs font-semibold"

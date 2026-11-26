@@ -5,9 +5,13 @@ export const PASSWORD = 'e2e-Password-123';
 export const uniqueEmail = (label) =>
   `e2e-${label}-${Date.now()}-${Math.random().toString(36).slice(2, 8)}@example.com`;
 
-export const register = async (page, email, displayName) => {
+export const openSignIn = async (page) => {
   await page.goto('/');
-  await page.click('[data-testid="auth-btn"]');
+  await page.click('[data-testid="landing-sign-in-btn"]');
+};
+
+export const register = async (page, email, displayName) => {
+  await openSignIn(page);
   await page.fill('[data-testid="auth-email-input"]', email);
   await page.click('[data-testid="auth-submit-btn"]');
   await page.fill('[data-testid="auth-display-name-input"]', displayName);
@@ -18,8 +22,7 @@ export const register = async (page, email, displayName) => {
 };
 
 export const login = async (page, email) => {
-  await page.goto('/');
-  await page.click('[data-testid="auth-btn"]');
+  await openSignIn(page);
   await page.fill('[data-testid="auth-email-input"]', email);
   await page.click('[data-testid="auth-submit-btn"]');
   await page.fill('[data-testid="auth-password-input"]', PASSWORD);
