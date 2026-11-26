@@ -17,8 +17,7 @@ test('should_give_invited_user_access_and_live_updates_when_project_is_shared', 
 
   // Act
   await test.step('invite member', async () => {
-    await owner.click('[data-testid="main-menu-btn"]');
-    await owner.click('[data-testid="share-btn"]');
+    await owner.locator('[data-testid="share-btn"]:visible').click();
     await owner.fill('[data-testid="share-email-input"]', memberEmail);
     await owner.click('[data-testid="share-invite-btn"]');
   });
