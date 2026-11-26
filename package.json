@@ -1,7 +1,7 @@
 {
   "name": "projekt-planer",
   "private": true,
-  "version": "4.4.5",
+  "version": "4.5.0",
   "description": "Interactive project planner with Gantt chart and swimlane view",
   "license": "AGPL-3.0-or-later",
   "repository": {
