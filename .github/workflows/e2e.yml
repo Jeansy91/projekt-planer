@@ -94,7 +94,7 @@ jobs:
 
       - name: Export Supabase settings for the dev server
         run: |
-          yarn --silent supabase status -o env > supabase.env
+          yarn supabase status -o env > supabase.env
           url=$(sed -n 's/^API_URL="\{0,1\}\([^"]*\)"\{0,1\}$/\1/p' supabase.env)
           key=$(sed -n 's/^\(PUBLISHABLE_KEY\|ANON_KEY\)="\{0,1\}\([^"]*\)"\{0,1\}$/\2/p' supabase.env | head -n 1)
           test -n "$url" && test -n "$key"
