@@ -238,7 +238,11 @@ jobs:
         uses: dependabot/fetch-metadata@v3
 
       - name: Merge patch and minor updates
-        if: steps.meta.outputs.update-type != 'version-update:semver-major'
+        # The self-hosted Supabase stack is not covered by CI, so its image
+        # updates always wait for a manual review
+        if: >-
+          steps.meta.outputs.update-type != 'version-update:semver-major' &&
+          steps.meta.outputs.package-ecosystem != 'docker_compose'
         env:
           GH_TOKEN: ${{ github.token }}
           PR_URL: ${{ github.event.pull_request.html_url }}

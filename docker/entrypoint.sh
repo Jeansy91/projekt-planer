@@ -52,7 +52,7 @@ if [ -n "$PROJEKT_PLANER_URL" ] && [ -n "$SUPABASE_ACCESS_TOKEN" ] && [ -n "$SUP
 fi
 
 # Self-hosted Supabase: copy the Edge Functions into the folder the
-# edge-runtime container serves (see docker/compose.self-hosted.yml)
+# edge-runtime container serves (see docker-compose.self-hosted.yml)
 if [ -n "$FUNCTIONS_DIR" ]; then
   if [ -d "$FUNCTIONS_DIR" ]; then
     echo "[entrypoint] Copying Edge Functions to $FUNCTIONS_DIR..."

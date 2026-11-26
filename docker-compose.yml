@@ -4,7 +4,7 @@
 #   docker compose up -d
 #
 # For a fully self-hosted setup including Supabase, see
-# docker/compose.self-hosted.yml and docs/deployment.md.
+# docker-compose.self-hosted.yml and docs/deployment.md.
 services:
   projekt-planer:
     image: ghcr.io/jeansy91/projekt-planer:${PROJEKT_PLANER_VERSION:-latest}

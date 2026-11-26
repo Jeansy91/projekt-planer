@@ -72,7 +72,19 @@ curl -O https://raw.githubusercontent.com/Jeansy91/projekt-planer/main/docker-co
 docker compose up -d
 ```
 
-To run your own Supabase as well, [`docker/compose.self-hosted.yml`](docker/compose.self-hosted.yml) extends the official Supabase Docker setup with Projekt-Planer. The steps are in [Deployment](docs/deployment.md#self-hosted-supabase).
+### Fully self-hosted, including Supabase
+
+[`docker-compose.self-hosted.yml`](docker-compose.self-hosted.yml) runs Projekt-Planer together with its own Supabase backend (Postgres, Auth, REST, Realtime, Storage, Edge Functions and the API gateway):
+
+```bash
+git clone https://github.com/Jeansy91/projekt-planer.git
+cd projekt-planer
+cp .env.self-hosted.example .env
+sh scripts/generate-supabase-secrets.sh
+docker compose -f docker-compose.self-hosted.yml up -d
+```
+
+Set the URLs and your mail server in `.env` before the first start. Details, reverse proxy and backups: [Deployment](docs/deployment.md#self-hosted-supabase).
 
 To build the image yourself, run `docker build -t projekt-planer .` in the repository.
 
@@ -174,12 +186,13 @@ supabase/
 e2e/
   tests/                # E2E tests with local projects
   cloud/                # E2E tests against Supabase
-docker/                 # nginx.conf, container entrypoint, self-hosted compose file
+docker/                 # nginx.conf, container entrypoint, Supabase config for self-hosting
 docs/                   # User guide, technical docs, ADRs
 public/                 # Static assets and screenshots
 scripts/                # Screenshot generator
 Dockerfile
 docker-compose.yml      # App only, with hosted Supabase or local projects
+docker-compose.self-hosted.yml  # App with its own Supabase backend
 ```
 
 See [Architecture](docs/architecture.md) for details.

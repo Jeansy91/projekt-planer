@@ -34,7 +34,7 @@ These variables are read only by `docker/entrypoint.sh`. Leave a variable empty 
 | `PROJEKT_PLANER_VERSION` | `latest` | Image tag of `ghcr.io/jeansy91/projekt-planer` |
 | `PROJEKT_PLANER_PORT` | `8080` | Host port of the app |
 
-`docker/compose.self-hosted.yml` reads its values from the `.env` of the official Supabase setup (`SUPABASE_PUBLIC_URL`, `ANON_KEY`, `POSTGRES_*`, `SITE_URL`, `SMTP_*`). See [Deployment](deployment.md#self-hosted-supabase).
+`docker-compose.self-hosted.yml` reads its own set of variables, described in [`.env.self-hosted.example`](../.env.self-hosted.example) and in [Deployment](deployment.md#self-hosted-supabase).
 
 ## Edge Function secrets
 

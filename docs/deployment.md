@@ -45,7 +45,7 @@ All variables are described in [Configuration](configuration.md). Pin a version 
 
 ## Docker Compose
 
-Two compose files cover the common setups.
+Two compose files cover the common setups: the app alone, or the app with its own Supabase.
 
 ### App only
 
@@ -60,44 +60,61 @@ docker compose up -d
 
 ### Self-hosted Supabase
 
-`docker/compose.self-hosted.yml` runs Projekt-Planer together with your own Supabase. It extends the [official Supabase Docker setup](https://supabase.com/docs/guides/self-hosting/docker) instead of copying it, so Supabase keeps its own update path. Docker Compose 2.24.4 or later is required.
+`docker-compose.self-hosted.yml` runs Projekt-Planer with its own Supabase backend. It contains only the services the app uses:
 
-1. Set up Supabase as described in its guide:
+| Service | Image | Purpose |
+|---|---|---|
+| `app` | `ghcr.io/jeansy91/projekt-planer` | The app; applies the migrations and installs the Edge Functions on start |
+| `gateway` | Kong | Supabase API on one port: Auth, REST, Realtime, Storage, Functions |
+| `db` | Supabase Postgres | Database |
+| `auth` | GoTrue | Sign-up, login, MFA, mails |
+| `rest` | PostgREST | Data API |
+| `realtime` | Supabase Realtime | Live updates between collaborators |
+| `storage` | Supabase Storage | Avatars, stored in a Docker volume |
+| `functions` | Supabase Edge Runtime | The Projekt-Planer Edge Functions |
 
-   ```bash
-   git clone --depth 1 https://github.com/supabase/supabase
-   cd supabase/docker
-   cp .env.example .env
-   ```
+Studio, imgproxy, the connection pooler and the logging stack are left out. The gateway configuration, the database init scripts and the functions router come from the official Supabase Docker setup, see [`docker/supabase/README.md`](../docker/supabase/README.md).
 
-   Generate your own secrets and keys as the guide explains; never run with the example values.
+Supabase names 4 GB of RAM as the minimum for its full stack; this one leaves out several services and needs less. Docker Compose 2.24 or later is required.
 
-2. Adjust these values in `supabase/docker/.env`:
+#### 1. Configure
 
-   | Variable | Value |
-   |---|---|
-   | `SITE_URL` | URL of Projekt-Planer, for example `http://localhost:8080` |
-   | `ADDITIONAL_REDIRECT_URLS` | The same URL |
-   | `SUPABASE_PUBLIC_URL` | URL of the Supabase API gateway, reachable from the browser |
-   | `SMTP_*` | Your mail server, used by Supabase Auth and by the invitation function |
+```bash
+git clone https://github.com/Jeansy91/projekt-planer.git
+cd projekt-planer
+cp .env.self-hosted.example .env
+sh scripts/generate-supabase-secrets.sh
+```
 
-3. Start both together:
+The script needs `openssl` (on Windows, run it in Git Bash) and writes a database password, the JWT secret, the anon and service role keys and the Realtime keys into `.env`. It refuses to overwrite existing secrets, because new ones lock you out of an existing database.
 
-   ```bash
-   docker compose -f docker-compose.yml \
-     -f /path/to/projekt-planer/docker/compose.self-hosted.yml up -d
-   ```
+Then edit `.env`:
 
-What the extension file does:
+| Variable | Value |
+|---|---|
+| `PROJEKT_PLANER_URL` | Public URL of the app, for example `https://planner.example.com` |
+| `SUPABASE_PUBLIC_URL` | Public URL of the Supabase API, for example `https://api.planner.example.com` |
+| `SMTP_*` | Your mail server; sign-up confirmation, password reset and invitations need it |
 
-- Adds the `projekt-planer` container on port `8080` (`PROJEKT_PLANER_PORT`). It applies the migrations to the Supabase database on every start and copies the Edge Functions into `volumes/functions/`, where the edge runtime serves them.
-- Passes the SMTP settings and the app URL to the Edge Functions.
-- Points Supabase Auth to the Projekt-Planer email templates and enables TOTP MFA.
-- Leaves out imgproxy and the Supavisor pooler, which Projekt-Planer does not use. Start them with `--profile imgproxy` or `--profile pooler` if you need them for something else.
+For a quick test on one machine, keep the defaults `http://localhost:8080` and `http://localhost:8000`.
 
-Studio stays part of the stack, because the official API gateway waits for it. It also gives you a database UI on the gateway port.
+#### 2. Start
 
-Update Supabase with its own tooling (`update.sh` in `supabase/docker`), and Projekt-Planer by pulling a new image (`docker compose ... pull projekt-planer`).
+```bash
+docker compose -f docker-compose.self-hosted.yml up -d
+```
+
+On the first start, Postgres initialises, Auth and Storage create their schemas, then the app applies the Projekt-Planer migrations and copies the Edge Functions into the edge runtime. The app is available once `docker compose -f docker-compose.self-hosted.yml ps` shows all services as healthy.
+
+#### 3. Reverse proxy and TLS
+
+Both URLs must be reachable from the browser, over HTTPS in production. Put a reverse proxy (Caddy, Traefik, NGINX) in front of port `8080` (app) and port `8000` (API), and bind the ports to `127.0.0.1` if the proxy runs on the same host. Realtime needs WebSocket support on the API host.
+
+#### Updates and backups
+
+- Update the app: `docker compose -f docker-compose.self-hosted.yml pull app && docker compose -f docker-compose.self-hosted.yml up -d`. New migrations run on start.
+- Dependabot proposes updates of the Supabase images. They are never merged automatically; compare `docker/supabase/` with the official setup before merging.
+- Data lives in the Docker volumes `db-data` and `storage-data`. Back up the database with `docker compose -f docker-compose.self-hosted.yml exec db pg_dump -U postgres postgres > backup.sql`.
 
 ## Entrypoint
 
@@ -106,7 +123,7 @@ Update Supabase with its own tooling (`update.sh` in `supabase/docker`), and Pro
 1. Write `env-config.js` with the Supabase URL and publishable key.
 2. Apply pending migrations with `psql` (`DATABASE_URL`). Applied files are tracked in `public._migrations`.
 3. Set the Supabase auth `site_url` (`PROJEKT_PLANER_URL`, `SUPABASE_ACCESS_TOKEN`, `SUPABASE_PROJECT_REF`).
-4. Copy the Edge Functions into a folder served by a self-hosted edge runtime (`FUNCTIONS_DIR`).
+4. Copy the Edge Functions into the folder served by a self-hosted edge runtime (`FUNCTIONS_DIR`).
 5. Set the Edge Function secrets and deploy all functions to a hosted project (`SUPABASE_ACCESS_TOKEN`, `SUPABASE_PROJECT_REF`).
 6. Start NGINX.
 
@@ -121,6 +138,6 @@ Update Supabase with its own tooling (`update.sh` in `supabase/docker`), and Pro
 - `PROJEKT_PLANER_URL` is the public URL, and the Supabase auth redirect URLs include it
 - SMTP tested with an invitation to an unregistered address
 - Edge Functions deployed (check the entrypoint log)
-- Email templates from `supabase/email-templates/` set in the Supabase dashboard (Auth, Emails); the self-hosted setup does this automatically
+- Email templates from `supabase/email-templates/` set in the Supabase dashboard (Auth, Emails); `docker-compose.self-hosted.yml` does this automatically
 - The `service_role` key is never passed to the frontend
 - AGPL-3.0: if you change the code and run it for others, link your modified source (the footer links to this repository by default, see `SOURCE_CODE_URL` in `src/utils/constants.js`)
