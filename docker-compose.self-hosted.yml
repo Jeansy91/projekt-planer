@@ -73,7 +73,7 @@ services:
           - kong
 
   db:
-    image: supabase/postgres:17.6.1.136
+    image: supabase/postgres:17.12.0.002
     restart: unless-stopped
     volumes:
       - ./docker/supabase/db/realtime.sql:/docker-entrypoint-initdb.d/migrations/99-realtime.sql:Z
@@ -155,7 +155,7 @@ services:
       GOTRUE_MFA_TOTP_VERIFY_ENABLED: "true"
 
   rest:
-    image: postgrest/postgrest:v14.18
+    image: postgrest/postgrest:v16.6
     restart: unless-stopped
     depends_on:
       db:
@@ -180,7 +180,7 @@ services:
   realtime:
     # Realtime derives the tenant from the host name, so it has to keep this name
     container_name: realtime-dev.supabase-realtime
-    image: supabase/realtime:v2.174.6
+    image: supabase/realtime:v2.176.0
     restart: unless-stopped
     depends_on:
       db:
@@ -217,7 +217,7 @@ services:
     command: ["/app/bin/server"]
 
   storage:
-    image: supabase/storage-api:v1.98.6
+    image: supabase/storage-api:v1.98.7
     restart: unless-stopped
     depends_on:
       db:
@@ -246,7 +246,7 @@ services:
       - storage-data:/var/lib/storage
 
   functions:
-    image: supabase/edge-runtime:v1.79.2
+    image: supabase/edge-runtime:v1.79.3
     mem_limit: ${FUNCTIONS_MEMORY_LIMIT:-1g}
     restart: unless-stopped
     depends_on:
